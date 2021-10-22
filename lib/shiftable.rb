@@ -4,5 +4,4 @@ require_relative "shiftable/version"
 
 module Shiftable
   class Error < StandardError; end
-  # Your code goes here...
 end
