@@ -17,6 +17,7 @@ require "config/factory_bot"
 require "rspec_config/database_cleaner"
 require "shared_examples/factories"
 require "shared_examples/shiftable_single"
+require "shared_examples/shiftable_collection"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

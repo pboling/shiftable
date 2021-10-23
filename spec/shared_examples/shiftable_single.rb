@@ -12,21 +12,21 @@ shared_examples_for "a shiftable single record" do |options|
   describe "#shift_single" do
     context "when shift_from is nil" do
       it "returns false" do
-        result = described_class.shift_single(shift_to, nil)
+        result = described_class.shift_single(shift_to: shift_to, shift_from: nil)
         expect(result).to be false
       end
     end
 
     context "when shift_from is new" do
       it "returns false" do
-        result = described_class.shift_single(shift_to, build(factory))
+        result = described_class.shift_single(shift_to: shift_to, shift_from: build(factory))
         expect(result).to be false
       end
     end
 
     context "when shift_from does not have one" do
       it "returns false" do
-        result = described_class.shift_single(shift_to, create(factory))
+        result = described_class.shift_single(shift_to: shift_to, shift_from: create(factory))
         expect(result).to be false
       end
     end
@@ -37,27 +37,27 @@ shared_examples_for "a shiftable single record" do |options|
           it "returns false" do
             to_be_shifted
             to_shift_blocker
-            result = described_class.shift_single(shift_to, shift_from)
+            result = described_class.shift_single(shift_to: shift_to, shift_from: shift_from)
             expect(result).to be false
           end
 
           it "does not move existing record" do
             to_be_shifted
             to_shift_blocker
-            described_class.shift_single(shift_to, shift_from)
+            described_class.shift_single(shift_to: shift_to, shift_from: shift_from)
             expect(described_class.where(described_class.shift_column => shift_to.id).pluck(:id)).to_not include(to_be_shifted.id)
           end
         else
           it "returns true" do
             to_be_shifted
             to_shift_blocker
-            result = described_class.shift_single(shift_to, shift_from)
+            result = described_class.shift_single(shift_to: shift_to, shift_from: shift_from)
             expect(result).to be true
           end
           it "moves existing record" do
             to_be_shifted
             to_shift_blocker
-            described_class.shift_single(shift_to, shift_from)
+            described_class.shift_single(shift_to: shift_to, shift_from: shift_from)
             expect(described_class.where(described_class.shift_column => shift_to.id).pluck(:id)).to include(to_be_shifted.id)
           end
         end
@@ -66,7 +66,7 @@ shared_examples_for "a shiftable single record" do |options|
       context "when shift_to does not have one" do
         it "moves existing record shift_from => shift_to" do
           to_be_shifted
-          described_class.shift_single(shift_to, shift_from)
+          described_class.shift_single(shift_to: shift_to, shift_from: shift_from)
           expect(described_class.find_by(described_class.shift_column => shift_to.id)).to be_a(described_class)
         end
       end

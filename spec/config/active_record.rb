@@ -16,4 +16,8 @@ ActiveRecord::Base.establish_connection(:sqlite)
 
 load("#{dirname}/schema.rb")
 
-require "support/models"
+require "support/models/blaster_rounds"
+require "support/models/blasters"
+require "support/models/captains"
+require "support/models/space_federations"
+require "support/models/spaceships"

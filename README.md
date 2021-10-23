@@ -1,8 +1,9 @@
 # Shiftable
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/shiftable`. To experiment with that code, run `bin/console` for an interactive prompt.
+Do your Spaceships belong to Captains, but sometimes a Captain will retire, and you need to reassign the spaceship?
 
-TODO: Delete this and the text above, and describe your gem
+We've all been there. This gem provides structure around the process of "shifting" your records from one associated
+record to a new record.
 
 ## Installation
 
@@ -22,13 +23,85 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You are a spaceship captain (who isn't?!) so you have a spaceship (duh!)
+
+```ruby
+
+class Captain < ActiveRecord::Base
+  has_one :spaceship
+end
+```
+
+Spaceships belong to the Captain.
+
+```ruby
+
+class Spaceship < ActiveRecord::Base
+  belongs_to :captain
+end
+```
+
+But because you can't afford fuel, and this dystopian future continues to burn carbon, in episode 11, you need to sell
+the spaceship to your arch-nemesis Captain Sturgle.
+
+```ruby
+
+class Captain < ActiveRecord::Base
+  has_one :spaceship
+
+  def sell_spaceship_to(nemesis_captain)
+    Spaceship.shift_single(shift_to: nemesis_captain, shift_from: self)
+  end
+end
+```
+
+But how can you accomplish this? If you used the `shiftable` gem, won't take but a line(s) of code...
+
+```ruby
+
+class Spaceship < ActiveRecord::Base
+  belongs_to :captain
+  extend Shiftable::Single.new(
+    belongs_to: :captain,
+    has_one: :spaceship,
+    preflight_checks: true,
+    before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
+  )
+end
+```
+
+### Multiple association on a single class
+
+What if the Captain is really all that though? What if the captain and the spaceship have a boss... the space
+federation!
+
+```ruby
+
+class Spaceship < ActiveRecord::Base
+  belongs_to :captain
+  belongs_to :space_federation
+end
+
+class SpaceFederation < ActiveRecord::Base
+  has_many :captains
+  has_many :spaceships
+
+  def sell_spaceship_to(nemesis_federation)
+    Spaceship.shift_cx(shift_to: nemesis_federation, shift_from: self)
+  end
+end
+```
+
+... stay tuned!
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can
+also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the
+version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version,
+push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 

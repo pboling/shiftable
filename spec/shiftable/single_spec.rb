@@ -1,30 +1,30 @@
 # frozen_string_literal: true
 
 RSpec.describe Shiftable::Single do
-  describe "bad root class" do
-    subject(:bad_root_class) do
+  describe "non-symbol belongs_to" do
+    subject(:bad_belongs_to) do
       eval(<<-BAD
-        class BadRootClass < Blaster
-          extend Shiftable::Single.new(root_class: Integer, association: :banana)
-        end
-      BAD
-          )
-    end
-    it "raises ArgumentError" do
-      block_is_expected.to raise_error(ArgumentError, "root_class must respond_to :reflect_on_association")
-    end
-  end
-  describe "bad association" do
-    subject(:bad_root_class) do
-      eval(<<-BAD
-        class BadAssociation < Blaster
-          extend Shiftable::Single.new(root_class: Captain, association: 42)
+        class BadBlasterBTO < Blaster
+          extend Shiftable::Single.new(belongs_to: 'string', has_one: :banana)
         end
       BAD
       )
     end
     it "raises ArgumentError" do
-      block_is_expected.to raise_error(ArgumentError, "association must be a symbol")
+      block_is_expected.to raise_error(ArgumentError, "belongs_to must be a symbol")
+    end
+  end
+  describe "non-symbol has_one" do
+    subject(:bad_has_one) do
+      eval(<<-BAD
+        class BadBlasterHM < Blaster
+          extend Shiftable::Single.new(belongs_to: :symbol, has_one: 42)
+        end
+      BAD
+      )
+    end
+    it "raises ArgumentError" do
+      block_is_expected.to raise_error(ArgumentError, "has_one must be a symbol")
     end
   end
 
@@ -37,7 +37,7 @@ RSpec.describe Shiftable::Single do
 
     context "with before_save" do
       subject(:shift_single_alt) do
-        BigBlaster.shift_single(shift_to, shift_from)
+        BigBlaster.shift_single(shift_to: shift_to, shift_from: shift_from)
         to_be_shifted.reload
       end
       it "increments ownership_changes" do
