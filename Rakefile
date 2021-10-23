@@ -4,7 +4,8 @@ require "bundler/gem_tasks"
 require "rspec/core/rake_task"
 
 RSpec::Core::RakeTask.new(:spec)
-task test: :spec # alias spec => test
+desc "alias spec => test"
+task test: :spec
 
 require "rubocop/rake_task"
 

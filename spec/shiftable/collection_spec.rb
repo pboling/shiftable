@@ -79,10 +79,12 @@ RSpec.describe Shiftable::Collection do
 
       it "sets name" do
         block_is_expected.to change { to_be_shifted.pluck(:name).sort }
-                               .to(%w[I-Got-Shifted-And-You-Should-Too-0
-                 I-Got-Shifted-And-You-Should-Too-1
-                 I-Got-Shifted-And-You-Should-Too-2
-                 I-Got-Shifted-And-You-Should-Too-3])
+                               .to(%w[
+                I-Got-Shifted-And-You-Should-Too-0
+                I-Got-Shifted-And-You-Should-Too-1
+                I-Got-Shifted-And-You-Should-Too-2
+                I-Got-Shifted-And-You-Should-Too-3
+              ])
       end
 
       it "sets space_federation_id" do
