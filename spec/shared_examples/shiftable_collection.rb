@@ -37,6 +37,7 @@ shared_examples_for "a shiftable collection" do
           result = described_class.shift_cx(shift_to: shift_to, shift_from: shift_from)
           expect(result.map(&:id)).to eq([to_be_shifted.id])
         end
+
         it "moves existing record" do
           to_be_shifted
           described_class.shift_cx(shift_to: shift_to, shift_from: shift_from)

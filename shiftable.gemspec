@@ -20,30 +20,32 @@ Gem::Specification.new do |spec|
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject do |f|
-      (f == __FILE__) || f.match(%r{\A(?:(?:test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
-    end
-  end
+  spec.files = Dir["lib/**/*.rb", "CHANGELOG.md", "CODE_OF_CONDUCT.md", "Gemfile", "LICENSE.txt", "README.md",
+                   "shiftable.gemspec"]
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "activerecord"
-  spec.add_development_dependency "byebug"
-  spec.add_development_dependency "database_cleaner-active_record"
-  spec.add_development_dependency "factory_bot"
-  spec.add_development_dependency "faker"
-  spec.add_development_dependency "rake", "~> 13"
-  spec.add_development_dependency "rspec", "~> 3"
-  spec.add_development_dependency "rspec-block_is_expected"
+  spec.add_dependency "activerecord", ">= 1"
+  spec.add_development_dependency "byebug", "~> 11.1"
+  spec.add_development_dependency "database_cleaner-active_record", "~> 2.0"
+  spec.add_development_dependency "factory_bot", "~> 6.2"
+  spec.add_development_dependency "faker", "~> 2.19"
+  spec.add_development_dependency "rake", "~> 13.0"
+  spec.add_development_dependency "rspec", "~> 3.10"
+  spec.add_development_dependency "rspec-block_is_expected", "~> 1.0"
   spec.add_development_dependency "rubocop", "~> 1.2"
-  spec.add_development_dependency "rubocop-md"
-  spec.add_development_dependency "rubocop-performance"
-  spec.add_development_dependency "rubocop-rake"
-  spec.add_development_dependency "rubocop-rspec", "~> 2.0"
-  spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency "rubocop-faker", "~> 1.1"
+  spec.add_development_dependency "rubocop-md", "~> 1.0"
+  spec.add_development_dependency "rubocop-minitest", "~> 0.15"
+  spec.add_development_dependency "rubocop-packaging", "~> 0.5"
+  spec.add_development_dependency "rubocop-performance", "~> 1.11"
+  spec.add_development_dependency "rubocop-rake", "~> 0.6"
+  spec.add_development_dependency "rubocop-rspec", "~> 2.5"
+  spec.add_development_dependency "rubocop-rspec-focused", "~> 1.0"
+  spec.add_development_dependency "rubocop-thread_safety", "~> 0.4"
+  spec.add_development_dependency "simplecov", "~> 0.21"
+  spec.add_development_dependency "sqlite3", "~> 1"
   spec.add_development_dependency "yard", ">= 0.9.20"
 
   # For more information and examples about making a new gem, checkout our

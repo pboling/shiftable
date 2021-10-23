@@ -10,10 +10,12 @@ RSpec.describe Shiftable::Single do
       BAD
           )
     end
+
     it "raises ArgumentError" do
       block_is_expected.to raise_error(ArgumentError, "belongs_to must be a symbol")
     end
   end
+
   describe "non-symbol has_one" do
     subject(:bad_has_one) do
       eval(<<-BAD
@@ -23,6 +25,7 @@ RSpec.describe Shiftable::Single do
       BAD
       )
     end
+
     it "raises ArgumentError" do
       block_is_expected.to raise_error(ArgumentError, "has_one must be a symbol")
     end
@@ -40,9 +43,11 @@ RSpec.describe Shiftable::Single do
         BigBlaster.shift_single(shift_to: shift_to, shift_from: shift_from)
         to_be_shifted.reload
       end
+
       it "increments ownership_changes" do
         block_is_expected.to change(to_be_shifted, :ownership_changes).by(1)
       end
+
       it "sets name" do
         block_is_expected.to change(to_be_shifted, :name).to("I-Got-Shifted-And-You-Should-Too")
       end

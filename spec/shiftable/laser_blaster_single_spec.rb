@@ -10,43 +10,52 @@ RSpec.describe LaserBlaster do
   it_behaves_like "a shiftable single record", preflight_checks: true
 
   describe "when different blasters exist" do
-    context "on shift_to" do
+    context "with shift_to" do
       before do
         create :blaster, :thunder, captain: shift_to
       end
+
       it_behaves_like "a shiftable single record", preflight_checks: true
     end
-    context "on shift_from" do
+
+    context "with shift_from" do
       before do
         create :blaster, :thunder, captain: shift_from
       end
+
       it_behaves_like "a shiftable single record", preflight_checks: true
-      context "and shift_to" do
+      context "when also shift_to" do
         before do
           create :blaster, :thunder, captain: shift_to
           create :blaster, :thunder, captain: shift_from
         end
+
         it_behaves_like "a shiftable single record", preflight_checks: true
       end
     end
   end
+
   describe "when different STI blasters exist" do
-    context "on shift_to" do
+    context "with shift_to" do
       before do
         create :blaster, :alien_npc, captain: shift_to
       end
+
       it_behaves_like "a shiftable single record", preflight_checks: true
     end
-    context "on shift_from" do
+
+    context "with shift_from" do
       before do
         create :blaster, :alien_npc, captain: shift_from
       end
+
       it_behaves_like "a shiftable single record", preflight_checks: true
-      context "and shift_to" do
+      context "when also shift_to" do
         before do
           create :blaster, :alien_npc, captain: shift_to
           create :blaster, :alien_npc, captain: shift_from
         end
+
         it_behaves_like "a shiftable single record", preflight_checks: true
       end
     end
