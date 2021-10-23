@@ -28,12 +28,12 @@ class ThunderBlaster < Blaster
   end
 end
 
-# Test with before_save
+# Test with before_shift
 class BigBlaster < Blaster
   extend Shiftable::Single.new(
     belongs_to: :captain,
     has_one: :big_blaster,
-    before_save: lambda do |shifting:, **_|
+    before_shift: lambda do |shifting:, **_|
       shifting.ownership_changes += 1
       shifting.name = "I-Got-Shifted-And-You-Should-Too"
     end

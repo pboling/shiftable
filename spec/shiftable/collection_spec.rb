@@ -67,7 +67,7 @@ RSpec.describe Shiftable::Collection do
       end
     end
 
-    context "with before_save" do
+    context "with before_shift" do
       subject(:shift_cx_alt) do
         BigBlasterRound.shift_cx(shift_to: shift_to, shift_from: shift_from)
         to_be_shifted.reload

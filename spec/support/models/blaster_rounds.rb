@@ -33,12 +33,12 @@ class ThunderBlasterRound < BlasterRound
   end
 end
 
-# Test with before_save
+# Test with before_shift
 class BigBlasterRound < BlasterRound
   extend Shiftable::Collection.new(
     belongs_to: :space_federation,
     has_many: :big_blaster_rounds,
-    before_save: lambda do |shifting_rel:, **_|
+    before_shift: lambda do |shifting_rel:, **_|
       shifting_rel.each_with_index do |shifting, idx|
         shifting.spent = true
         shifting.name = "I-Got-Shifted-And-You-Should-Too-#{idx}"

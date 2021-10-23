@@ -66,12 +66,8 @@ But how can you accomplish this? If you used the `shiftable` gem, won't take but
 
 class Spaceship < ActiveRecord::Base
   belongs_to :captain
-  extend Shiftable::Single.new(
-    belongs_to: :captain,
-    has_one: :spaceship,
-    preflight_checks: true,
-    before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
-  )
+  extend Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, preflight_checks: true,
+                               before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
 end
 ```
 
@@ -81,13 +77,10 @@ NOTE: It doesn't matter if the extend occurs before or after the association mac
 
 class Spaceship < ActiveRecord::Base
   belongs_to :captain
+
   class << self
-    include Shiftable::Single.new(
-      belongs_to: :captain,
-      has_one: :spaceship,
-      preflight_checks: true,
-      before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
-    )
+    include Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, preflight_checks: true,
+                                  before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
   end
 end
 ```
@@ -106,11 +99,8 @@ all federation spaceships are commandeered!  You are ruined!
 
 class Spaceship < ActiveRecord::Base
   belongs_to :space_federation
-  extend Shiftable::Collection.new(
-    belongs_to: :space_federation,
-    has_one: :spaceship,
-    before_shift: ->(shifting_rel:, shift_to:, shift_from:) { shifting_rel.each {|spaceship| spaceship.federation_changes += 1 }
-  )
+  extend Shiftable::Collection.new belongs_to: :space_federation, has_one: :spaceship,
+                                   before_shift: ->(shifting_rel:, shift_to:, shift_from:) { shifting_rel.each { |spaceship| spaceship.federation_changes += 1 } }
 end
 
 class SpaceFederation < ActiveRecord::Base
@@ -137,19 +127,12 @@ end
 
 class Spaceship < ActiveRecord::Base
   belongs_to :captain
-  extend Shiftable::Single.new(
-    belongs_to: :captain,
-    has_one: :spaceship,
-    preflight_checks: true,
-    before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
-  )
+  extend Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, preflight_checks: true,
+                               before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
 
   belongs_to :space_federation
-  extend Shiftable::Collection.new(
-    belongs_to: :space_federation,
-    has_one: :spaceship,
-    before_shift: ->(shifting_rel:, shift_to:, shift_from:) { shifting_rel.each {|spaceship| spaceship.federation_changes += 1 }
-  )
+  extend Shiftable::Collection.new belongs_to: :space_federation, has_one: :spaceship,
+                                   before_shift: ->(shifting_rel:, shift_to:, shift_from:) { shifting_rel.each { |spaceship| spaceship.federation_changes += 1 } }
 end
 
 class SpaceFederation < ActiveRecord::Base

@@ -15,7 +15,7 @@
 module Shiftable
   # Inheriting from Module is a powerful pattern. If you like it checkout the debug_logging gem!
   class Collection < Module
-    def initialize(belongs_to:, has_many:, method_prefix: nil, preflight_checks: true, before_save: nil)
+    def initialize(belongs_to:, has_many:, method_prefix: nil, preflight_checks: true, before_shift: nil)
       super()
       raise ArgumentError, "belongs_to must be a symbol" unless belongs_to.is_a?(Symbol)
       raise ArgumentError, "has_many must be a symbol" unless has_many.is_a?(Symbol)
@@ -37,24 +37,24 @@ module Shiftable
 
       # will prevent the save if it returns false
       # allows for any custom logic to be run, such as setting shift_from attributes, prior to the shift is saved.
-      @before_save = before_save
+      @before_shift = before_shift
     end
 
     def extended(base)
       shift_cx_modulizer = ShiftCollectionModulizer.to_mod(@belongs_to, @has_many, @method_prefix,
-                                                           @before_save)
+                                                           @before_shift)
       base.singleton_class.send(:prepend, shift_cx_modulizer)
     end
 
     def included(base)
       shift_cx_modulizer = ShiftCollectionModulizer.to_mod(@belongs_to, @has_many, @method_prefix,
-                                                           @before_save)
+                                                           @before_shift)
       base.send(:prepend, shift_cx_modulizer)
     end
 
     # Creates anonymous Ruby Modules, containing dynamically built methods
     module ShiftCollectionModulizer
-      def to_mod(belongs_to, has_many, mepr, before_save)
+      def to_mod(belongs_to, has_many, mepr, before_shift)
         Module.new do
           define_method(:"#{mepr}shift_cx_column") do
             reflection = reflect_on_association(belongs_to).klass.reflect_on_association(has_many)
@@ -78,7 +78,7 @@ module Shiftable
             shifting_rel.each do |shifting|
               shifting.send("#{send("#{mepr}shift_cx_column")}=", shift_to.id)
             end
-            before_save&.call(shifting_rel: shifting_rel, shift_to: shift_to, shift_from: shift_from)
+            before_shift&.call(shifting_rel: shifting_rel, shift_to: shift_to, shift_from: shift_from)
             shifting_rel.each(&:save)
             shifting_rel
           end

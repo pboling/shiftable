@@ -21,7 +21,7 @@
 module Shiftable
   # Inheriting from Module is a powerful pattern. If you like it checkout the debug_logging gem!
   class Single < Module
-    def initialize(belongs_to:, has_one:, method_prefix: nil, preflight_checks: true, before_save: nil)
+    def initialize(belongs_to:, has_one:, method_prefix: nil, preflight_checks: true, before_shift: nil)
       super()
       raise ArgumentError, "belongs_to must be a symbol" unless belongs_to.is_a?(Symbol)
       raise ArgumentError, "has_one must be a symbol" unless has_one.is_a?(Symbol)
@@ -46,24 +46,24 @@ module Shiftable
 
       # will prevent the save if it returns false
       # allows for any custom logic to be run, such as setting shift_from attributes, prior to the shift is saved.
-      @before_save = before_save
+      @before_shift = before_shift
     end
 
     def extended(base)
       shift_single_modulizer = ShiftSingleModulizer.to_mod(@belongs_to, @has_one, @method_prefix, @preflight_checks,
-                                                           @before_save)
+                                                           @before_shift)
       base.singleton_class.send(:prepend, shift_single_modulizer)
     end
 
     def included(base)
       shift_single_modulizer = ShiftSingleModulizer.to_mod(@belongs_to, @has_one, @method_prefix, @preflight_checks,
-                                                           @before_save)
+                                                           @before_shift)
       base.send(:prepend, shift_single_modulizer)
     end
 
     # Creates anonymous Ruby Modules, containing dynamically built methods
     module ShiftSingleModulizer
-      def to_mod(belongs_to, has_one, mepr, preflight_checks, before_save)
+      def to_mod(belongs_to, has_one, mepr, preflight_checks, before_shift)
         Module.new do
           define_method(:"#{mepr}shift_column") do
             reflection = reflect_on_association(belongs_to).klass.reflect_on_association(has_one)
@@ -90,7 +90,7 @@ module Shiftable
             return false unless shifting
 
             shifting.send("#{send("#{mepr}shift_column")}=", shift_to.id)
-            shifting.save if before_save.nil? || before_save.call(shifting: shifting, shift_to: shift_to, shift_from: shift_from)
+            shifting.save if before_shift.nil? || before_shift.call(shifting: shifting, shift_to: shift_to, shift_from: shift_from)
           end
         end
       end
