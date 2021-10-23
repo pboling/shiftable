@@ -18,12 +18,9 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = "https://github.com/pboling/shiftable"
   spec.metadata["changelog_uri"] = "https://github.com/pboling/shiftable/blob/main/CHANGELOG.md"
 
-  # Specify which files should be added to the gem when it is released.
-  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  spec.files = Dir["lib/**/*.rb", "CHANGELOG.md", "CODE_OF_CONDUCT.md", "Gemfile", "LICENSE.txt", "README.md",
-                   "shiftable.gemspec"]
+  spec.files = Dir["lib/**/*.rb", "CHANGELOG.md", "CODE_OF_CONDUCT.md", "LICENSE.txt", "README.md"]
   spec.bindir = "exe"
-  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.executables = []
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activerecord", ">= 1"
@@ -47,7 +44,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov", "~> 0.21"
   spec.add_development_dependency "sqlite3", "~> 1"
   spec.add_development_dependency "yard", ">= 0.9.20"
-
-  # For more information and examples about making a new gem, checkout our
-  # guide at: https://bundler.io/guides/creating_gem.html
 end
