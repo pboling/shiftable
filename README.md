@@ -70,23 +70,88 @@ class Spaceship < ActiveRecord::Base
 end
 ```
 
-### Multiple association on a single class
-
-What if the Captain is really all that though? What if the captain and the spaceship have a boss... the space
-federation!
+NOTE: It doesn't matter if the extend occurs before or after the association macro `belongs_to`.  In fact, it doesn't matter so much that you can even do this...
 
 ```ruby
 
 class Spaceship < ActiveRecord::Base
   belongs_to :captain
+  class << self
+    include Shiftable::Single.new(
+      belongs_to: :captain,
+      has_one: :spaceship,
+      preflight_checks: true,
+      before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
+    )
+  end
+end
+```
+
+### Single Table INheritance
+
+This works as you would expect with STI (single table inheritance) classes, i.e. when defined on a subclass, only the records of that class get shifted.
+
+### Multiple association on a single class
+
+What if the captain and the spaceship have a boss... the space
+federation!  And in a run-in with their arch-Nemesis the Plinth-inth,
+all federation spaceships are commandeered!  You are ruined!
+
+```ruby
+
+class Spaceship < ActiveRecord::Base
   belongs_to :space_federation
+  extend Shiftable::Collection.new(
+    belongs_to: :space_federation,
+    has_one: :spaceship,
+    before_shift: ->(shifting_rel:, shift_to:, shift_from:) { shifting_rel.each {|spaceship| spaceship.federation_changes += 1 }
+  )
+end
+
+class SpaceFederation < ActiveRecord::Base
+  has_many :spaceships
+
+  def all_spaceships_commandeered_by(nemesis_federation)
+    Spaceship.shift_cx(shift_to: nemesis_federation, shift_from: self)
+  end
+end
+```
+
+### Complete example
+
+Putting it all together...
+
+```ruby
+class Captain < ActiveRecord::Base
+  has_one :spaceship
+
+  def sell_spaceship_to(nemesis_captain)
+    Spaceship.shift_single(shift_to: nemesis_captain, shift_from: self)
+  end
+end
+
+class Spaceship < ActiveRecord::Base
+  belongs_to :captain
+  extend Shiftable::Single.new(
+    belongs_to: :captain,
+    has_one: :spaceship,
+    preflight_checks: true,
+    before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
+  )
+
+  belongs_to :space_federation
+  extend Shiftable::Collection.new(
+    belongs_to: :space_federation,
+    has_one: :spaceship,
+    before_shift: ->(shifting_rel:, shift_to:, shift_from:) { shifting_rel.each {|spaceship| spaceship.federation_changes += 1 }
+  )
 end
 
 class SpaceFederation < ActiveRecord::Base
   has_many :captains
   has_many :spaceships
 
-  def sell_spaceship_to(nemesis_federation)
+  def all_spaceships_commandeered_by(nemesis_federation)
     Spaceship.shift_cx(shift_to: nemesis_federation, shift_from: self)
   end
 end
