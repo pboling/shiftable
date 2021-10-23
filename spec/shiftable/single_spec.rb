@@ -23,7 +23,7 @@ RSpec.describe Shiftable::Single do
           extend Shiftable::Single.new(belongs_to: :symbol, has_one: 42)
         end
       BAD
-      )
+          )
     end
 
     it "raises ArgumentError" do
