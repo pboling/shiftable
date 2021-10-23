@@ -8,7 +8,7 @@ RSpec.describe Shiftable::Collection do
           extend Shiftable::Collection.new(belongs_to: 'string', has_many: :banana)
         end
       BAD
-      )
+          )
     end
     it "raises ArgumentError" do
       block_is_expected.to raise_error(ArgumentError, "belongs_to must be a symbol")

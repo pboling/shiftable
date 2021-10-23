@@ -78,10 +78,8 @@ module Shiftable
             shifting_rel.each do |shifting|
               shifting.send("#{send("#{mepr}shift_cx_column")}=", shift_to.id)
             end
-            before_save.call(shifting_rel: shifting_rel, shift_to: shift_to, shift_from: shift_from) if before_save
-            shifting_rel.each do |shifting|
-              shifting.save
-            end
+            before_save&.call(shifting_rel: shifting_rel, shift_to: shift_to, shift_from: shift_from)
+            shifting_rel.each(&:save)
             shifting_rel
           end
         end
