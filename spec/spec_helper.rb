@@ -1,6 +1,22 @@
 # frozen_string_literal: true
 
+# External Gems
+require "faker"
+require "byebug"
+require "rspec/block_is_expected"
+
+require "simplecov"
+SimpleCov.start
+
+# This gem
 require "shiftable"
+
+# Configs
+require "config/active_record"
+require "config/factory_bot"
+require "rspec_config/database_cleaner"
+require "shared_examples/factories"
+require "shared_examples/shiftable_single"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -11,5 +27,11 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+
+  config.include FactoryBot::Syntax::Methods
+
+  config.before(:suite) do
+    FactoryBot.find_definitions
   end
 end

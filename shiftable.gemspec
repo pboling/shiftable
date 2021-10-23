@@ -29,13 +29,21 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "activerecord"
+  spec.add_development_dependency "byebug"
+  spec.add_development_dependency "database_cleaner-active_record"
+  spec.add_development_dependency "factory_bot"
+  spec.add_development_dependency "faker"
   spec.add_development_dependency "rake", "~> 13"
   spec.add_development_dependency "rspec", "~> 3"
+  spec.add_development_dependency "rspec-block_is_expected"
   spec.add_development_dependency "rubocop", "~> 1.2"
   spec.add_development_dependency "rubocop-md"
   spec.add_development_dependency "rubocop-performance"
   spec.add_development_dependency "rubocop-rake"
   spec.add_development_dependency "rubocop-rspec", "~> 2.0"
+  spec.add_development_dependency "simplecov"
+  spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "yard", "~> 0.6"
 
   # For more information and examples about making a new gem, checkout our

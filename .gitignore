@@ -9,4 +9,9 @@
 
 # rspec failure tracking
 .rspec_status
+
+# Bundler
 Gemfile.lock
+
+# ActiveRecord
+/spec/config/debug.log
