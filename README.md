@@ -5,6 +5,11 @@ Do your Spaceships belong to Captains, but sometimes a Captain will retire, and 
 We've all been there. This gem provides structure around the process of "shifting" your records from one associated
 record to a new record.
 
+## Compatibility
+
+Targeted ruby compatibility is non-EOL versions of Ruby, currently 2.6, 2.7, and 3.0, but may work on older Rubies back to 2.0.
+Targeted ActiveRecord (Rails not required) compatibility follows the same scheme as [Rails Security Issue maintenance policy](https://guides.rubyonrails.org/maintenance_policy.html#security-issues), currently 6.1, 6.0, 5.2, but it is highly likely that this code will work in any version of ActiveRecord/Rails that runs on Ruby 2+. 
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -87,7 +92,7 @@ class Spaceship < ActiveRecord::Base
 end
 ```
 
-### Single Table INheritance
+### Single Table Inheritance
 
 This works as you would expect with STI (single table inheritance) classes, i.e. when defined on a subclass, only the records of that class get shifted.
 
