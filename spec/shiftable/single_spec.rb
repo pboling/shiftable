@@ -8,7 +8,7 @@ RSpec.describe Shiftable::Single do
           extend Shiftable::Single.new(root_class: Integer, association: :banana)
         end
       BAD
-      )
+          )
     end
     it "raises ArgumentError" do
       block_is_expected.to raise_error(ArgumentError, "root_class must respond_to :reflect_on_association")
