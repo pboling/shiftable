@@ -6,7 +6,6 @@ require "byebug"
 require "rspec/block_is_expected"
 
 require "simplecov"
-SimpleCov.start
 
 # This gem
 require "shiftable"
