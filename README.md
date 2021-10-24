@@ -7,15 +7,18 @@ record to a new record.
 
 ## Compatibility
 
-Targeted ruby compatibility is non-EOL versions of Ruby, currently 2.6, 2.7, and 3.0, but may work on older Rubies back to 2.0.
-Targeted ActiveRecord (Rails not required) compatibility follows the same scheme as [Rails Security Issue maintenance policy](https://guides.rubyonrails.org/maintenance_policy.html#security-issues), currently 6.1, 6.0, 5.2, but it is highly likely that this code will work in any version of ActiveRecord/Rails that runs on Ruby 2+. 
+Targeted ruby compatibility is non-EOL versions of Ruby, currently 2.6, 2.7, and 3.0, but may work on older Rubies back
+to 2.0. Targeted ActiveRecord (Rails not required) compatibility follows the same scheme
+as [Rails Security Issue maintenance policy](https://guides.rubyonrails.org/maintenance_policy.html#security-issues),
+currently 6.1, 6.0, 5.2, but it is highly likely that this code will work in any version of ActiveRecord/Rails that runs
+on Ruby 2+.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'shiftable'
+gem "shiftable"
 ```
 
 And then execute:
@@ -100,7 +103,9 @@ all federation spaceships are commandeered!  You are ruined!
 class Spaceship < ActiveRecord::Base
   belongs_to :space_federation
   extend Shiftable::Collection.new belongs_to: :space_federation, has_one: :spaceship,
-                                   before_shift: ->(shifting_rel:, shift_to:, shift_from:) { shifting_rel.each { |spaceship| spaceship.federation_changes += 1 } }
+                                   before_shift: lambda do |shifting_rel:, shift_to:, shift_from:|
+    shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
+  end
 end
 
 class SpaceFederation < ActiveRecord::Base
@@ -132,7 +137,9 @@ class Spaceship < ActiveRecord::Base
 
   belongs_to :space_federation
   extend Shiftable::Collection.new belongs_to: :space_federation, has_one: :spaceship,
-                                   before_shift: ->(shifting_rel:, shift_to:, shift_from:) { shifting_rel.each { |spaceship| spaceship.federation_changes += 1 } }
+                                   before_shift: lambda do |shifting_rel:, shift_to:, shift_from:|
+    shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
+  end
 end
 
 class SpaceFederation < ActiveRecord::Base
