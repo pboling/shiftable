@@ -90,7 +90,8 @@ module Shiftable
             return false unless shifting
 
             shifting.send("#{send("#{mepr}shift_column")}=", shift_to.id)
-            shifting.save if before_shift.nil? || before_shift.call(shifting: shifting, shift_to: shift_to, shift_from: shift_from)
+            shifting.save if before_shift.nil? || before_shift.call(shifting: shifting, shift_to: shift_to,
+                                                                    shift_from: shift_from)
           end
         end
       end
