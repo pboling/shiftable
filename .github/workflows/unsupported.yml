@@ -14,8 +14,6 @@ jobs:
       matrix:
         ruby:
           - 2.5
-          - 2.4
-          - 2.3
     runs-on: ubuntu-20.04
     continue-on-error: ${{ matrix.allow_failure || endsWith(matrix.ruby, 'head') }}
     steps:
