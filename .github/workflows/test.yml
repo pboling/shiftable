@@ -20,7 +20,8 @@ jobs:
       fail-fast: false
       matrix:
         ruby:
-          - ruby-head
+          - truffleruby-head
+          # - ruby-head # faker is not compatible with ruby-head?
           - 3.0
           - 2.7
           - 2.6
