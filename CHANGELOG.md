@@ -1,5 +1,16 @@
 ## [Unreleased]
 
+## [0.3.0] - 2021-10-26
+
+### Changed
+
+- Internal rewrite to improve maintainability
+- Extreme edge cases involving incorrect configuration will raise slightly different errors.
+
+### Added
+
+- Even more 100% spec coverage
+
 ## [0.2.0] - 2021-10-24
 
 ### Changed
