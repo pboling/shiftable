@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-#
 # Usage:
 #
 #   class BlasterRounds < ActiveRecord::Base
@@ -15,72 +14,59 @@
 module Shiftable
   # Inheriting from Module is a powerful pattern. If you like it checkout the debug_logging gem!
   class Collection < Module
-    def initialize(belongs_to:, has_many:, method_prefix: nil, preflight_checks: true, before_shift: nil)
+    # associations: belongs_to, has_many
+    # options: method_prefix, before_shift
+    def initialize(belongs_to:, has_many:, method_prefix: nil, before_shift: nil)
+      # Ruby's Module initializer doesn't take any arguments
       super()
-      raise ArgumentError, "belongs_to must be a symbol" unless belongs_to.is_a?(Symbol)
-      raise ArgumentError, "has_many must be a symbol" unless has_many.is_a?(Symbol)
 
-      # For the following, imagine you are a Spaceship Captain, the Spaceship belongs_to you, and it has only one Captain.
-      # But you have to sell it to your nemesis!
-      #
-      # The name of the belongs_to association, defined on the shifting model, e.g. Spaceship
-      # Normally a camel-cased, symbolized, version of the class name.
-      # In the case where Spaceship belongs_to: :captain, this is :captain.
-      @belongs_to = belongs_to
-
-      # The name of the has_one association, defined on the shift_to/shift_from model, e.g. Captain.
-      # Normally a camel-cased, symbolized, version of the class name.
-      # In the case where Captain has_one: :spaceship, this is :spaceship.
-      @has_many = has_many
-
-      @method_prefix = method_prefix
-
-      # will prevent the save if it returns false
-      # allows for any custom logic to be run, such as setting shift_from attributes, prior to the shift is saved.
-      @before_shift = before_shift
+      @signature = ModSignature.new(
+        # For the following, imagine you are a Space Federation, each Spaceship in the fleet belongs_to you,
+        #   i.e. the federation has_many spaceships.
+        # But you lose the war, and your nemesis commandeers all your ships!
+        associations: {
+          # The name of the belongs_to association, defined on the shifting model, e.g. Spaceship
+          # Normally a camel-cased, symbolized, version of the class name.
+          # In the case where Spaceship belongs_to: :space_federation, this is :space_federation.
+          belongs_to: belongs_to.to_s.to_sym,
+          # The name of the has_many association, defined on the shift_to/shift_from model, e.g. SpaceFederation.
+          # Normally a camel-cased, symbolized, version of the class name.
+          # In the case where SpaceFederation has_many: :spaceships, this is :spaceships.
+          has_many: has_many.to_s.to_sym
+        },
+        options: {
+          method_prefix: method_prefix,
+          # will prevent the save if it returns false
+          # allows for any custom logic to be run, such as setting attributes, prior to the shift (save).
+          before_shift: before_shift
+        },
+        type: :cx
+      )
     end
 
+    # NOTE: Possible difference in how inheritance works when using extend vs include
+    #       with Shiftable::Collection.new
     def extended(base)
-      shift_cx_modulizer = ShiftCollectionModulizer.to_mod(@belongs_to, @has_many, @method_prefix,
-                                                           @before_shift)
+      shift_cx_modulizer = ShiftCollectionModulizer.to_mod(@signature.add_base(base))
       base.singleton_class.send(:prepend, shift_cx_modulizer)
     end
 
+    # NOTE: Possible difference in how inheritance works when using extend vs include
+    #       with Shiftable::Collection.new
     def included(base)
-      shift_cx_modulizer = ShiftCollectionModulizer.to_mod(@belongs_to, @has_many, @method_prefix,
-                                                           @before_shift)
+      shift_cx_modulizer = ShiftCollectionModulizer.to_mod(@signature.add_base(base))
       base.send(:prepend, shift_cx_modulizer)
     end
 
     # Creates anonymous Ruby Modules, containing dynamically built methods
     module ShiftCollectionModulizer
-      def to_mod(belongs_to, has_many, mepr, before_shift)
+      def to_mod(signature)
         Module.new do
-          define_method(:"#{mepr}shift_cx_column") do
-            reflection = reflect_on_association(belongs_to).klass.reflect_on_association(has_many)
-            reflection.foreign_key
+          define_method(:"#{signature.mepr}shift_cx_column") do
+            signature.shift_column
           end
-          define_method(:"#{mepr}shift_cx_relation") do |id|
-            return nil unless id
-
-            where(send("#{mepr}shift_cx_column") => id)
-          end
-          define_method(:"#{mepr}shift_cx_safe_relation") do |shift_to:, shift_from:|
-            return false if shift_from&.id.nil?
-            return false if shift_to&.id.nil?
-
-            send("#{mepr}shift_cx_relation", shift_from.id)
-          end
-          define_method(:"#{mepr}shift_cx") do |shift_to:, shift_from:|
-            shifting_rel = send("#{mepr}shift_cx_safe_relation", shift_to: shift_to, shift_from: shift_from)
-            return false unless shifting_rel && shifting_rel.any?
-
-            shifting_rel.each do |shifting|
-              shifting.send("#{send("#{mepr}shift_cx_column")}=", shift_to.id)
-            end
-            before_shift&.call(shifting_rel: shifting_rel, shift_to: shift_to, shift_from: shift_from)
-            shifting_rel.each(&:save)
-            shifting_rel
+          define_method(:"#{signature.mepr}shift_cx") do |shift_to:, shift_from:|
+            signature.shift_data!(shift_to: shift_to, shift_from: shift_from)
           end
         end
       end

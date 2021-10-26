@@ -32,43 +32,51 @@ shared_examples_for "a shiftable single record" do |options|
     end
 
     context "when shift_from already has one" do
+      subject(:shift_single) { described_class.shift_single(shift_to: shift_to, shift_from: shift_from) }
+
       context "when shift_to already has one and preflight_checks: #{options[:preflight_checks]}" do
         if options[:preflight_checks]
           it "returns false" do
             to_be_shifted
             to_shift_blocker
-            result = described_class.shift_single(shift_to: shift_to, shift_from: shift_from)
-            expect(result).to be false
+            expect(shift_single).to be false
           end
 
-          it "does not move existing record" do
-            to_be_shifted
+          it "does not move (change) existing record" do
             to_shift_blocker
+            expect(to_be_shifted.send(described_class.shift_column)).to eq(shift_from.id)
             described_class.shift_single(shift_to: shift_to, shift_from: shift_from)
-            expect(described_class.where(described_class.shift_column => shift_to.id).pluck(:id)).not_to include(to_be_shifted.id)
+            to_be_shifted.reload
+            expect(to_be_shifted.send(described_class.shift_column)).to eq(shift_from.id)
           end
         else
           it "returns true" do
             to_be_shifted
             to_shift_blocker
-            result = described_class.shift_single(shift_to: shift_to, shift_from: shift_from)
-            expect(result).to be true
+            expect(shift_single).to be true
           end
 
           it "moves existing record" do
-            to_be_shifted
             to_shift_blocker
+            expect(to_be_shifted.send(described_class.shift_column)).to eq(shift_from.id)
             described_class.shift_single(shift_to: shift_to, shift_from: shift_from)
-            expect(described_class.where(described_class.shift_column => shift_to.id).pluck(:id)).to include(to_be_shifted.id)
+            to_be_shifted.reload
+            expect(to_be_shifted.send(described_class.shift_column)).to eq(shift_to.id)
           end
         end
       end
 
       context "when shift_to does not have one" do
-        it "moves existing record shift_from => shift_to" do
+        it "returns true" do
           to_be_shifted
+          expect(shift_single).to be true
+        end
+
+        it "moves existing record" do
+          expect(to_be_shifted.send(described_class.shift_column)).to eq(shift_from.id)
           described_class.shift_single(shift_to: shift_to, shift_from: shift_from)
-          expect(described_class.find_by(described_class.shift_column => shift_to.id)).to be_a(described_class)
+          to_be_shifted.reload
+          expect(to_be_shifted.send(described_class.shift_column)).to eq(shift_to.id)
         end
       end
     end

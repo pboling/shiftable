@@ -16,8 +16,10 @@ ActiveRecord::Base.establish_connection(:sqlite)
 
 load("#{dirname}/schema.rb")
 
+# Load order constrained...
+require "support/models/space_federations"
+require "support/models/captains"
 require "support/models/blaster_rounds"
 require "support/models/blasters"
-require "support/models/captains"
-require "support/models/space_federations"
 require "support/models/spaceships"
+require "support/models/bad_models"

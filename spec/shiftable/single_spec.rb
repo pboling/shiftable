@@ -1,33 +1,29 @@
 # frozen_string_literal: true
 
 RSpec.describe Shiftable::Single do
-  describe "non-symbol belongs_to" do
-    subject(:bad_belongs_to) do
-      eval(<<-BAD
-        class BadBlasterBTO < Blaster
-          extend Shiftable::Single.new(belongs_to: 'string', has_one: :banana)
-        end
-      BAD
-          )
+  describe "invalid belongs_to" do
+    subject(:bad_belongs_to_shift) do
+      BadBlasterBTO.shooter_shift_single(shift_to: shift_to, shift_from: shift_from)
     end
 
-    it "raises ArgumentError" do
-      block_is_expected.to raise_error(ArgumentError, "belongs_to must be a symbol")
+    let(:shift_to) { create :captain }
+    let(:shift_from) { create :captain }
+
+    it "raises error" do
+      block_is_expected.to raise_error(ArgumentError, "Unable to find belongs_to: :421 in BadBlasterBTO")
     end
   end
 
-  describe "non-symbol has_one" do
-    subject(:bad_has_one) do
-      eval(<<-BAD
-        class BadBlasterHM < Blaster
-          extend Shiftable::Single.new(belongs_to: :symbol, has_one: 42)
-        end
-      BAD
-          )
+  describe "invalid has_one" do
+    subject(:bad_belongs_to_shift) do
+      BadBlasterHM.shooter_shift_single(shift_to: shift_to, shift_from: shift_from)
     end
 
-    it "raises ArgumentError" do
-      block_is_expected.to raise_error(ArgumentError, "has_one must be a symbol")
+    let(:shift_to) { create :captain }
+    let(:shift_from) { create :captain }
+
+    it "raises error" do
+      block_is_expected.to raise_error(ArgumentError, "Unable to find belongs_to: :symbol in BadBlasterHM")
     end
   end
 

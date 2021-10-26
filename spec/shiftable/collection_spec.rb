@@ -1,33 +1,29 @@
 # frozen_string_literal: true
 
 RSpec.describe Shiftable::Collection do
-  describe "non-symbol belongs_to" do
-    subject(:bad_belongs_to) do
-      eval(<<-BAD
-        class BadBlasterRoundBTO < BlasterRound
-          extend Shiftable::Collection.new(belongs_to: 'string', has_many: :banana)
-        end
-      BAD
-          )
+  describe "invalid belongs_to" do
+    subject(:bad_belongs_to_shift) do
+      BadBlasterRoundBTO.shooter_shift_cx(shift_to: shift_to, shift_from: shift_from)
     end
 
-    it "raises ArgumentError" do
-      block_is_expected.to raise_error(ArgumentError, "belongs_to must be a symbol")
+    let(:shift_to) { create :space_federation }
+    let(:shift_from) { create :space_federation }
+
+    it "raises error" do
+      block_is_expected.to raise_error(ArgumentError, "Unable to find belongs_to: :456 in BadBlasterRoundBTO")
     end
   end
 
-  describe "non-symbol has_many" do
-    subject(:bad_has_many) do
-      eval(<<-BAD
-        class BadBlasterRoundHM < BlasterRound
-          extend Shiftable::Collection.new(belongs_to: :symbol, has_many: 42)
-        end
-      BAD
-          )
+  describe "invalid has_many" do
+    subject(:bad_has_many_shift) do
+      BadBlasterRoundHM.shooter_shift_cx(shift_to: shift_to, shift_from: shift_from)
     end
 
-    it "raises ArgumentError" do
-      block_is_expected.to raise_error(ArgumentError, "has_many must be a symbol")
+    let(:shift_to) { create :space_federation }
+    let(:shift_from) { create :space_federation }
+
+    it "raises error" do
+      block_is_expected.to raise_error(ArgumentError, "Unable to find belongs_to: :symbol in BadBlasterRoundHM")
     end
   end
 

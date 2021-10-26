@@ -5,6 +5,7 @@
 #   it_behaves_like "a shiftable collection" do
 #     let(:shift_to) { create :space_federation }
 #     let(:shift_from) { create :space_federation }
+#     let(:existing_record) { create :spaceship, captain: shift_to }
 #     let(:to_be_shifted) { create :spaceship, captain: shift_from }
 #   end
 shared_examples_for "a shiftable collection" do
@@ -31,25 +32,46 @@ shared_examples_for "a shiftable collection" do
     end
 
     context "when shift_from already has one" do
+      subject(:shift_cx) { described_class.shift_cx(shift_to: shift_to, shift_from: shift_from) }
+
       context "when shift_to already has one" do
-        it "returns the records" do
+        it "returns correct records" do
           to_be_shifted
-          result = described_class.shift_cx(shift_to: shift_to, shift_from: shift_from)
-          expect(result.map(&:id)).to eq([to_be_shifted.id])
+          existing_record
+          expect(shift_cx.map(&:id)).to eq([to_be_shifted.id])
+        end
+
+        it "returns correct type of records" do
+          to_be_shifted
+          expect(shift_cx.first).to be_a(described_class)
         end
 
         it "moves existing record" do
           to_be_shifted
-          described_class.shift_cx(shift_to: shift_to, shift_from: shift_from)
-          expect(described_class.where(described_class.shift_cx_column => shift_to.id).pluck(:id)).to eq([to_be_shifted.id])
+          existing_record
+          expect(described_class.where(described_class.shift_cx_column => shift_to.id).pluck(:id)).to eq([existing_record.id])
+          shift_cx
+          expect(described_class.where(described_class.shift_cx_column => shift_to.id).pluck(:id)).to eq([to_be_shifted.id,
+                                                                                                          existing_record.id])
         end
       end
 
       context "when shift_to does not have one" do
-        it "moves existing record shift_from => shift_to" do
+        it "returns correct records" do
           to_be_shifted
-          described_class.shift_cx(shift_to: shift_to, shift_from: shift_from)
-          expect(described_class.find_by(described_class.shift_cx_column => shift_to.id)).to be_a(described_class)
+          expect(shift_cx.map(&:id)).to eq([to_be_shifted.id])
+        end
+
+        it "returns correct type of records" do
+          to_be_shifted
+          expect(shift_cx.first).to be_a(described_class)
+        end
+
+        it "moves existing record" do
+          to_be_shifted
+          expect(described_class.where(described_class.shift_cx_column => shift_to.id).pluck(:id)).to eq([])
+          shift_cx
+          expect(described_class.where(described_class.shift_cx_column => shift_to.id).pluck(:id)).to eq([to_be_shifted.id])
         end
       end
     end
