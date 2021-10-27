@@ -7,7 +7,7 @@ require "rspec/block_is_expected"
 
 # Code coverage
 require "simplecov"
-require 'simplecov-cobertura'
+require "simplecov-cobertura"
 SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
 
 # This gem
