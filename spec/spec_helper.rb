@@ -5,7 +5,10 @@ require "faker"
 require "byebug"
 require "rspec/block_is_expected"
 
+# Code coverage
 require "simplecov"
+require 'simplecov-cobertura'
+SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
 
 # This gem
 require "shiftable"
