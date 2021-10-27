@@ -7,8 +7,7 @@ module Shiftable
       sg: %i[belongs_to has_one],
       cx: %i[belongs_to has_many]
     }.freeze
-    attr_accessor :associations, :options, :type
-    attr_reader :base
+    attr_reader :associations, :options, :type, :base
 
     # Imagine you are a Spaceship Captain, the Spaceship belongs_to you, and it has only one Captain.
     # But you have to sell it to your nemesis!
