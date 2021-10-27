@@ -42,4 +42,9 @@
 - 100% test coverage
 
 [0.1.0]: https://github.com/pboling/shiftable/releases/tag/v0.1.0
+
 [0.1.1]: https://github.com/pboling/shiftable/releases/tag/v0.1.1
+
+[0.2.0]: https://github.com/pboling/shiftable/releases/tag/v0.2.0
+
+[0.3.0]: https://github.com/pboling/shiftable/releases/tag/v0.3.0
