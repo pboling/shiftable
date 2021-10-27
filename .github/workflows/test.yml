@@ -48,12 +48,9 @@ jobs:
         run: bundle exec rake test
       - uses: codecov/codecov-action@v2
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/coverage.xml
           flags: unittests
           name: codecov-upload
           fail_ci_if_error: true
-          verbose: true
       - name: CodeClimate Post-build Notification
         run: cc-test-reporter after-build
         if: matrix.ruby == '2.6' && github.event_name != 'pull_request' && always()
