@@ -11,38 +11,34 @@
 shared_examples_for "a shiftable collection" do
   describe "#shift_cx" do
     context "when shift_to is nil" do
+      subject(:shift) { described_class.shift_cx(shift_to: nil, shift_from: shift_from) }
+
       it "returns false" do
-        expect do
-          described_class.shift_cx(shift_to: nil,
-                                   shift_from: shift_from)
-        end.to raise_error(ArgumentError, "shift_to must have an id (primary key) value, but is: ")
+        block_is_expected.to raise_error(ArgumentError, "shift_to must have an id (primary key) value, but is: ")
       end
     end
 
     context "when shift_to is new" do
+      subject(:shift) { described_class.shift_cx(shift_to: build(factory), shift_from: shift_from) }
+
       it "returns false" do
-        expect do
-          described_class.shift_cx(shift_to: build(factory),
-                                   shift_from: shift_from)
-        end.to raise_error(ArgumentError, "shift_to must have an id (primary key) value, but is: ")
+        block_is_expected.to raise_error(ArgumentError, "shift_to must have an id (primary key) value, but is: ")
       end
     end
 
     context "when shift_from is nil" do
+      subject(:shift) { described_class.shift_cx(shift_to: shift_to, shift_from: nil) }
+
       it "returns false" do
-        expect do
-          described_class.shift_cx(shift_to: shift_to,
-                                   shift_from: nil)
-        end.to raise_error(ArgumentError, "shift_from must have an id (primary key) value, but is: ")
+        block_is_expected.to raise_error(ArgumentError, "shift_from must have an id (primary key) value, but is: ")
       end
     end
 
     context "when shift_from is new" do
+      subject(:shift) { described_class.shift_cx(shift_to: shift_to, shift_from: build(factory)) }
+
       it "returns false" do
-        expect do
-          described_class.shift_cx(shift_to: shift_to,
-                                   shift_from: build(factory))
-        end.to raise_error(ArgumentError, "shift_from must have an id (primary key) value, but is: ")
+        block_is_expected.to raise_error(ArgumentError, "shift_from must have an id (primary key) value, but is: ")
       end
     end
 

@@ -74,19 +74,19 @@ RSpec.describe Shiftable::Collection do
       end
 
       it "sets name" do
-        block_is_expected.to change { to_be_shifted.pluck(:name).sort }
-                               .to(%w[
-                I-Got-Shifted-And-You-Should-Too-0
-                I-Got-Shifted-And-You-Should-Too-1
-                I-Got-Shifted-And-You-Should-Too-2
-                I-Got-Shifted-And-You-Should-Too-3
-              ])
+        block_is_expected.to change { to_be_shifted.pluck(:name).sort }.
+          to(%w[
+               I-Got-Shifted-And-You-Should-Too-0
+               I-Got-Shifted-And-You-Should-Too-1
+               I-Got-Shifted-And-You-Should-Too-2
+               I-Got-Shifted-And-You-Should-Too-3
+             ])
       end
 
       it "sets space_federation_id" do
-        block_is_expected.to change { to_be_shifted.pluck(:space_federation_id).uniq }
-                               .from([shift_from.id])
-                               .to([shift_to.id])
+        block_is_expected.to change { to_be_shifted.pluck(:space_federation_id).uniq }.
+          from([shift_from.id]).
+          to([shift_to.id])
       end
 
       it "does not change LaserBlasterRounds" do

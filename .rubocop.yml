@@ -15,6 +15,9 @@ AllCops:
 
 Gemspec/DateAssignment: # new in 1.10
   Enabled: true
+Layout/DotPosition:
+  Enabled: true
+  EnforcedStyle: trailing
 Layout/LineEndStringConcatenationIndentation: # new in 1.18
   Enabled: true
 Layout/SpaceBeforeBrackets: # new in 1.7

@@ -3,10 +3,7 @@
 module Shiftable
   class ModSignature
     VALID_TYPES = %i[sg cx].freeze
-    VALID_ASSOCIATIONS = {
-      sg: %i[belongs_to has_one],
-      cx: %i[belongs_to has_many]
-    }.freeze
+    VALID_ASSOCIATIONS = { sg: %i[belongs_to has_one], cx: %i[belongs_to has_many] }.freeze
     DEFAULT_BEFORE_SHIFT = ->(*_) { true }
     attr_reader :associations, :options, :type, :base
 
