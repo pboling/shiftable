@@ -15,7 +15,7 @@ record to a new record.
 | unit tests              |  [![unit tests](https://github.com/pboling/shiftable/actions/workflows/test.yml/badge.svg)](https://github.com/pboling/shiftable/actions) |
 | lint status             |  [![lint status](https://github.com/pboling/shiftable/actions/workflows/style.yml/badge.svg)](https://github.com/pboling/shiftable/actions) |
 | unsupported status      |  [![unsupported status](https://github.com/pboling/shiftable/actions/workflows/unsupported.yml/badge.svg)](https://github.com/pboling/shiftable/actions) |
-| test coverage           |  [![Test Coverage](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/test_coverage)](https://codeclimate.com/github/pboling/shiftable/test_coverage) |
+| test coverage           |  [![Test Coverage](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/test_coverage)](https://codeclimate.com/github/pboling/shiftable/test_coverage) [![codecov](https://codecov.io/gh/pboling/shiftable/branch/main/graph/badge.svg?token=J1542PYN2Z)](https://codecov.io/gh/pboling/shiftable) |
 | maintainability         |  [![Maintainability](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/maintainability)](https://codeclimate.com/github/pboling/shiftable/maintainability) |
 | code triage             |  [![Open Source Helpers](https://www.codetriage.com/pboling/shiftable/badges/users.svg)](https://www.codetriage.com/pboling/shiftable) |
 | homepage                |  [on Github.com][homepage], [on Railsbling.com][blogpage] |
