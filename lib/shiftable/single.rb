@@ -67,11 +67,12 @@ module Shiftable
     # Creates anonymous Ruby Modules, containing dynamically built methods
     module ShiftSingleModulizer
       def to_mod(signature)
+        prefix = signature.method_prefix
         Module.new do
-          define_method(:"#{signature.mepr}shift_column") do
+          define_method(:"#{prefix}shift_column") do
             signature.shift_column
           end
-          define_method(:"#{signature.mepr}shift_single") do |shift_to:, shift_from:|
+          define_method(:"#{prefix}shift_single") do |shift_to:, shift_from:|
             signature.shift_data!(shift_to: shift_to, shift_from: shift_from)
           end
         end

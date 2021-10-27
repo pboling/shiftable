@@ -134,8 +134,6 @@ module Shiftable
       options[:method_prefix]
     end
 
-    alias mepr method_prefix
-
     # will prevent the save if it returns false
     # allows for any custom logic to be run, such as setting shift_from attributes, prior to the shift is saved.
     def before_shift
