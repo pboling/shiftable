@@ -7,6 +7,7 @@ module Shiftable
       sg: %i[belongs_to has_one],
       cx: %i[belongs_to has_many]
     }.freeze
+    DEFAULT_BEFORE_SHIFT = ->(*_) { true }
     attr_reader :associations, :options, :type, :base
 
     # Imagine you are a Spaceship Captain, the Spaceship belongs_to you, and it has only one Captain.
@@ -21,12 +22,21 @@ module Shiftable
     end
 
     def validate
-      raise ArgumentError, "type must be one of: #{VALID_TYPES}, provided: #{type}" unless VALID_TYPES.include?(type)
-      raise ArgumentError, "associations must be symbols" if associations.keys.detect { |a| !a.is_a?(Symbol) }
-      raise ArgumentError, "exactly two distinct associations must be provided" unless associations.keys.uniq.length == 2
+      raise ArgumentError, "type must be one of: #{VALID_TYPES}, provided: #{type}" if invalid_type?
+      raise ArgumentError, "associations must be symbols" if invalid_association_key_type?
+      raise ArgumentError, "exactly two distinct associations must be provided" if invalid_number_of_associations?
+    end
 
-      invalid_tokens = associations.keys - VALID_ASSOCIATIONS[type]
-      raise ArgumentError, "valid associations: #{VALID_ASSOCIATIONS[type]}, invalid: #{invalid_tokens}" if invalid_tokens.any?
+    def invalid_type?
+      !VALID_TYPES.include?(type)
+    end
+
+    def invalid_association_key_type?
+      associations.keys.detect { |key| !key.is_a?(Symbol) }
+    end
+
+    def invalid_number_of_associations?
+      associations.keys.uniq.length != 2
     end
 
     # @note Chainable
@@ -44,8 +54,9 @@ module Shiftable
       bt = base.reflect_on_association(belongs_to)
       raise ArgumentError, "Unable to find belongs_to: :#{belongs_to} in #{base}" unless bt
 
-      hr = bt.klass.reflect_on_association(has_rel)
-      raise ArgumentError, "Unable to find #{has_rel_name}: :#{has_rel} in #{bt.klass}" unless hr
+      klass = bt.klass
+      hr = klass.reflect_on_association(has_rel)
+      raise ArgumentError, "Unable to find #{has_rel_name}: :#{has_rel} in #{klass}" unless hr
     end
 
     module CxMethods
@@ -55,30 +66,17 @@ module Shiftable
 
       alias has_rel has_many
 
-      # returns nil or ActiveRecord::Relation object
-      def data_for_shift(id)
-        base.where(send("shift_column") => id) if super
-      end
-
-      # returns false, nil or ActiveRecord::Relation object
-      def data_for_shift_safe(shift_to:, shift_from:)
-        return false unless super
-
-        data_for_shift(shift_from.id)
-      end
-
       def shift_data!(shift_to:, shift_from:)
         validate_relationships
-
-        shifting_rel = data_for_shift_safe(shift_to: shift_to, shift_from: shift_from)
-        return false unless shifting_rel && shifting_rel.any?
-
-        shifting_rel.each do |shifting|
-          shifting.send("#{send(:shift_column)}=", shift_to.id)
+        shifting_rel = ShiftingRelation.new(
+          to: shift_to,
+          from: shift_from,
+          column: shift_column,
+          base: base
+        )
+        shifting_rel.shift do |result|
+          before_shift&.call(shifting_rel: result, shift_to: shift_to, shift_from: shift_from)
         end
-        before_shift&.call(shifting_rel: shifting_rel, shift_to: shift_to, shift_from: shift_from)
-        shifting_rel.each(&:save)
-        shifting_rel
       end
     end
 
@@ -90,35 +88,23 @@ module Shiftable
       alias has_rel has_one
 
       # Do not move record if a record already exists (we are shifting a "has_one" association, after all)
-      def preflight_checks
-        options[:preflight_checks]
-      end
-
-      # returns nil or ActiveRecord object
-      def data_for_shift(id)
-        base.find_by(send("shift_column") => id) if super
-      end
-
-      # returns false, nil or ActiveRecord object
-      def data_for_shift_safe(shift_to:, shift_from:)
-        return false unless super
-
-        if preflight_checks
-          already_exists = shift_to.send(has_one)
-          return false if already_exists
-        end
-        data_for_shift(shift_from.id)
+      def precheck
+        options[:precheck]
       end
 
       def shift_data!(shift_to:, shift_from:)
         validate_relationships
-
-        shifting = data_for_shift_safe(shift_to: shift_to, shift_from: shift_from)
-        return false unless shifting
-
-        shifting.send("#{send(:shift_column)}=", shift_to.id)
-        shifting.save if before_shift.nil? || before_shift.call(shifting: shifting, shift_to: shift_to,
-                                                                shift_from: shift_from)
+        shifting = ShiftingRecord.new(
+          to: shift_to,
+          from: shift_from,
+          column: shift_column,
+          base: base
+        ) do
+          !precheck || !shift_to.send(has_one)
+        end
+        shifting.shift do |result|
+          before_shift&.call(shifting: result, shift_to: shift_to, shift_from: shift_from)
+        end
       end
     end
 
@@ -136,26 +122,12 @@ module Shiftable
     # will prevent the save if it returns false
     # allows for any custom logic to be run, such as setting shift_from attributes, prior to the shift is saved.
     def before_shift
-      options[:before_shift]
+      options[:before_shift] || DEFAULT_BEFORE_SHIFT
     end
 
     def shift_column
       reflection = base.reflect_on_association(belongs_to).klass.reflect_on_association(has_rel)
       reflection.foreign_key
-    end
-
-    # Effect is to short-circuit data_for_shift method prior to executing the ActiveRecord query
-    #   if there is no ID, to avoid a full table scan when no id provided,
-    #   e.g. where(id: nil).
-    def data_for_shift(id)
-      true if id
-    end
-
-    # Effect is to short-circuit data_for_shift_safe method prior to executing the ActiveRecord query
-    #   if there is no ID, to avoid a full table scan when no id provided,
-    #   e.g. where(id: nil).
-    def data_for_shift_safe(shift_to:, shift_from:)
-      true if shift_from&.id && shift_to&.id
     end
   end
 end

@@ -87,7 +87,7 @@ But how can you accomplish this? If you used the `shiftable` gem, won't take but
 
 class Spaceship < ActiveRecord::Base
   belongs_to :captain
-  extend Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, preflight_checks: true,
+  extend Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, precheck: true,
                                before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
 end
 ```
@@ -100,8 +100,10 @@ class Spaceship < ActiveRecord::Base
   belongs_to :captain
 
   class << self
-    include Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, preflight_checks: true,
-                                  before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
+    include Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, precheck: true,
+                                  before_shift: lambda { |shifting:, shift_to:, shift_from:|
+                                    shifting.ownership_changes += 1
+                                  }
   end
 end
 ```
@@ -150,7 +152,7 @@ end
 
 class Spaceship < ActiveRecord::Base
   belongs_to :captain
-  extend Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, preflight_checks: true,
+  extend Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, precheck: true,
                                before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
 
   belongs_to :space_federation

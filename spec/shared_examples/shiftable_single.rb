@@ -2,7 +2,7 @@
 
 # Usage:
 #
-#   it_behaves_like "a shiftable single record", preflight_checks: true do
+#   it_behaves_like "a shiftable single record", precheck: true do
 #     let(:shift_to) { create :captain }
 #     let(:shift_from) { create :captain }
 #     let(:to_shift_blocker) { create :spaceship, captain: shift_to }
@@ -10,17 +10,39 @@
 #   end
 shared_examples_for "a shiftable single record" do |options|
   describe "#shift_single" do
+    context "when shift_to is nil" do
+      it "returns false" do
+        expect do
+          described_class.shift_single(shift_to: nil,
+                                       shift_from: shift_from)
+        end.to raise_error(ArgumentError, "shift_to must have an id (primary key) value, but is: ")
+      end
+    end
+
+    context "when shift_to is new" do
+      it "returns false" do
+        expect do
+          described_class.shift_single(shift_to: build(factory),
+                                       shift_from: shift_from)
+        end.to raise_error(ArgumentError, "shift_to must have an id (primary key) value, but is: ")
+      end
+    end
+
     context "when shift_from is nil" do
       it "returns false" do
-        result = described_class.shift_single(shift_to: shift_to, shift_from: nil)
-        expect(result).to be false
+        expect do
+          described_class.shift_single(shift_to: shift_to,
+                                       shift_from: nil)
+        end.to raise_error(ArgumentError, "shift_from must have an id (primary key) value, but is: ")
       end
     end
 
     context "when shift_from is new" do
       it "returns false" do
-        result = described_class.shift_single(shift_to: shift_to, shift_from: build(factory))
-        expect(result).to be false
+        expect do
+          described_class.shift_single(shift_to: shift_to,
+                                       shift_from: build(factory))
+        end.to raise_error(ArgumentError, "shift_from must have an id (primary key) value, but is: ")
       end
     end
 
@@ -34,8 +56,8 @@ shared_examples_for "a shiftable single record" do |options|
     context "when shift_from already has one" do
       subject(:shift_single) { described_class.shift_single(shift_to: shift_to, shift_from: shift_from) }
 
-      context "when shift_to already has one and preflight_checks: #{options[:preflight_checks]}" do
-        if options[:preflight_checks]
+      context "when shift_to already has one and precheck: #{options[:precheck]}" do
+        if options[:precheck]
           it "returns false" do
             to_be_shifted
             to_shift_blocker

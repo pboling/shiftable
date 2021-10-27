@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class for testing
 class BlasterRound < ActiveRecord::Base
   belongs_to :blaster
   belongs_to :space_federation
@@ -10,18 +11,22 @@ class BlasterRound < ActiveRecord::Base
   )
 end
 
+# Class for testing
 class LaserBlasterRound < BlasterRound
   extend Shiftable::Collection.new(belongs_to: :captain, has_many: :laser_blaster_rounds)
 end
 
+# Class for testing
 class LaserBlasterNPCRound < BlasterRound
   extend Shiftable::Collection.new(belongs_to: :captain, has_many: :laser_blaster_rounds)
 end
 
+# Class for testing
 class AlienBlasterRound < BlasterRound
   extend Shiftable::Collection.new(belongs_to: :captain, has_many: :alien_blaster_rounds)
 end
 
+# Class for testing
 class AlienBlasterNPCRound < BlasterRound
   extend Shiftable::Collection.new(belongs_to: :captain, has_many: :alien_blaster_rounds)
 end

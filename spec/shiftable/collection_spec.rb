@@ -98,7 +98,9 @@ RSpec.describe Shiftable::Collection do
       end
 
       it "does not change ThunderBlasterRounds" do
-        block_is_expected.not_to change { ThunderBlasterRound.all.pluck(:space_federation_id).uniq }.from([shift_from.id])
+        block_is_expected.not_to change {
+          ThunderBlasterRound.all.pluck(:space_federation_id).uniq
+        }.from([shift_from.id])
       end
     end
   end

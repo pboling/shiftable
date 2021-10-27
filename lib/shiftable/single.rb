@@ -13,7 +13,7 @@
 #     extend Shiftable::Single.new(
 #             belongs_to: :captain,
 #             has_one: :spaceship,
-#             preflight_checks: true,
+#             precheck: true,
 #             before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
 #           )
 #   end
@@ -21,7 +21,7 @@
 module Shiftable
   # Inheriting from Module is a powerful pattern. If you like it checkout the debug_logging gem!
   class Single < Module
-    def initialize(belongs_to:, has_one:, method_prefix: nil, preflight_checks: true, before_shift: nil)
+    def initialize(belongs_to:, has_one:, method_prefix: nil, precheck: true, before_shift: nil)
       # Ruby's Module initializer doesn't take any arguments
       super()
 
@@ -40,7 +40,7 @@ module Shiftable
         },
         options: {
           # Do not move record if a record already exists (we are shifting a "has_one" association, after all)
-          preflight_checks: preflight_checks,
+          precheck: precheck,
           method_prefix: method_prefix,
           # will prevent the save if it returns false
           # allows for any custom logic to be run, such as setting attributes, prior to the shift (save).

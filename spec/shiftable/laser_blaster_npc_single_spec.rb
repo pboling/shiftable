@@ -7,7 +7,7 @@ RSpec.describe LaserBlasterNPC do
   let(:to_shift_blocker) { create :blaster, :laser_npc, captain: shift_to }
   let(:to_be_shifted) { create :blaster, :laser_npc, captain: shift_from }
 
-  it_behaves_like "a shiftable single record", preflight_checks: false
+  it_behaves_like "a shiftable single record", precheck: false
 
   describe "when different blasters exist" do
     context "with shift_to" do
@@ -15,7 +15,7 @@ RSpec.describe LaserBlasterNPC do
         create :blaster, :thunder, captain: shift_to
       end
 
-      it_behaves_like "a shiftable single record", preflight_checks: false
+      it_behaves_like "a shiftable single record", precheck: false
     end
 
     context "with shift_from" do
@@ -23,14 +23,14 @@ RSpec.describe LaserBlasterNPC do
         create :blaster, :thunder, captain: shift_from
       end
 
-      it_behaves_like "a shiftable single record", preflight_checks: false
+      it_behaves_like "a shiftable single record", precheck: false
       context "when also shift_to" do
         before do
           create :blaster, :thunder, captain: shift_to
           create :blaster, :thunder, captain: shift_from
         end
 
-        it_behaves_like "a shiftable single record", preflight_checks: false
+        it_behaves_like "a shiftable single record", precheck: false
       end
     end
   end
@@ -41,7 +41,7 @@ RSpec.describe LaserBlasterNPC do
         create :blaster, :alien_npc, captain: shift_to
       end
 
-      it_behaves_like "a shiftable single record", preflight_checks: false
+      it_behaves_like "a shiftable single record", precheck: false
     end
 
     context "when shift_from" do
@@ -49,14 +49,14 @@ RSpec.describe LaserBlasterNPC do
         create :blaster, :alien_npc, captain: shift_from
       end
 
-      it_behaves_like "a shiftable single record", preflight_checks: false
+      it_behaves_like "a shiftable single record", precheck: false
       context "when also shift_to" do
         before do
           create :blaster, :alien_npc, captain: shift_to
           create :blaster, :alien_npc, captain: shift_from
         end
 
-        it_behaves_like "a shiftable single record", preflight_checks: false
+        it_behaves_like "a shiftable single record", precheck: false
       end
     end
   end

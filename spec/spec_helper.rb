@@ -8,7 +8,7 @@ require "rspec/block_is_expected"
 # Code coverage
 require "simplecov"
 require "simplecov-cobertura"
-SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter unless ENV["HTML_COVERAGE"] == "true"
 
 # This gem
 require "shiftable"

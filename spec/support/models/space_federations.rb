@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class for testing
 class SpaceFederation < ActiveRecord::Base
   has_many :captains
   has_many :spaceships

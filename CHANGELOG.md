@@ -1,5 +1,15 @@
 ## [Unreleased]
 
+## [0.4.0] - 2021-10-27
+
+### Changed
+
+- option :preflight_checks renamed to :precheck
+
+### Added
+
+- Even more 100% spec coverage
+
 ## [0.3.0] - 2021-10-26
 
 ### Changed

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class for testing
 class Captain < ActiveRecord::Base
   extend Shiftable::Collection.new(belongs_to: :space_federation, has_many: :captains)
 
