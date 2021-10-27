@@ -23,7 +23,7 @@ RSpec.describe Shiftable::Single do
     let(:shift_from) { create :captain }
 
     it "raises error" do
-      block_is_expected.to raise_error(ArgumentError, "Unable to find belongs_to: :symbol in BadBlasterHM")
+      block_is_expected.to raise_error(ArgumentError, "Unable to find has_one: :401 in Captain")
     end
   end
 

@@ -23,7 +23,7 @@ RSpec.describe Shiftable::Collection do
     let(:shift_from) { create :space_federation }
 
     it "raises error" do
-      block_is_expected.to raise_error(ArgumentError, "Unable to find belongs_to: :symbol in BadBlasterRoundHM")
+      block_is_expected.to raise_error(ArgumentError, "Unable to find has_many: :444 in Blaster")
     end
   end
 

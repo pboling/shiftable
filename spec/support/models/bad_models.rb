@@ -5,7 +5,7 @@ class BadBlasterRoundBTO < BlasterRound
 end
 
 class BadBlasterRoundHM < BlasterRound
-  extend Shiftable::Collection.new(belongs_to: :symbol, has_many: 444, method_prefix: "shooter_")
+  extend Shiftable::Collection.new(belongs_to: :blaster, has_many: 444, method_prefix: "shooter_")
 end
 
 class BadBlasterBTO < Blaster
@@ -13,5 +13,5 @@ class BadBlasterBTO < Blaster
 end
 
 class BadBlasterHM < Blaster
-  extend Shiftable::Single.new(belongs_to: :symbol, has_one: 401, method_prefix: "shooter_")
+  extend Shiftable::Single.new(belongs_to: :captain, has_one: 401, method_prefix: "shooter_")
 end
