@@ -17,8 +17,8 @@ record to a new record.
 | unsupported status      |  [![unsupported status](https://github.com/pboling/shiftable/actions/workflows/unsupported.yml/badge.svg)](https://github.com/pboling/shiftable/actions) |
 | test coverage           |  [![Test Coverage](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/test_coverage)](https://codeclimate.com/github/pboling/shiftable/test_coverage) [![codecov](https://codecov.io/gh/pboling/shiftable/branch/main/graph/badge.svg?token=J1542PYN2Z)](https://codecov.io/gh/pboling/shiftable) |
 | maintainability         |  [![Maintainability](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/maintainability)](https://codeclimate.com/github/pboling/shiftable/maintainability) |
-| code triage             |  [![Open Source Helpers](https://www.codetriage.com/pboling/shiftable/badges/users.svg)](https://www.codetriage.com/pboling/shiftable) |
-| homepage                |  [on Github.com][homepage], [on Railsbling.com][blogpage] |
+| code triage             |  [![Open Source Helpers](https://www.codetriage.com/pboling/shiftable/badges/users.svg)](https://www.codetriage.com/pboling/shiftable) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/pboling/shiftable/issues) |
+| resources               |  [![Join the chat at https://gitter.im/pboling/shiftable](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pboling/shiftable?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [Source][homepage], [Blog][blogpage] |
 | documentation           |  [on RDoc.info][documentation] |
 | Spread ~♡ⓛⓞⓥⓔ♡~      |  [🌏][aboutme], [👼][angelme], [💻][coderme], [![Tweet @ Peter][followme-img]][tweetme], [🌹][politicme] |
 

@@ -1,0 +1,7 @@
+coverage:
+  require_ci_to_pass: yes
+  notify:
+    gitter:
+      default:
+        url: "https://webhooks.gitter.im/e/f3b386f90afd1bf319e0"
+        threshold: 1%
