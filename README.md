@@ -7,19 +7,19 @@ record to a new record.
 
 | Project                 |  Shiftable |
 |------------------------ | ----------------------- |
-| gem name                |  [shiftable](https://rubygems.org/gems/shiftable) |
-| license                 |  [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) |
-| download rank           |  [![Downloads Today](https://img.shields.io/gem/rd/shiftable.svg)](https://github.com/pboling/shiftable) |
-| version                 |  [![Version](https://img.shields.io/gem/v/shiftable.svg)](https://rubygems.org/gems/shiftable) |
-| dependencies            |  [![Depfu](https://badges.depfu.com/badges/0412727b7e3b740b950a683eebc708e2/count.svg)](https://depfu.com/github/pboling/shiftable?project_id=32594) |
-| unit tests              |  [![unit tests](https://github.com/pboling/shiftable/actions/workflows/test.yml/badge.svg)](https://github.com/pboling/shiftable/actions) |
-| lint status             |  [![lint status](https://github.com/pboling/shiftable/actions/workflows/style.yml/badge.svg)](https://github.com/pboling/shiftable/actions) |
-| unsupported status      |  [![unsupported status](https://github.com/pboling/shiftable/actions/workflows/unsupported.yml/badge.svg)](https://github.com/pboling/shiftable/actions) |
-| test coverage           |  [![Test Coverage](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/test_coverage)](https://codeclimate.com/github/pboling/shiftable/test_coverage) [![codecov](https://codecov.io/gh/pboling/shiftable/branch/main/graph/badge.svg?token=J1542PYN2Z)](https://codecov.io/gh/pboling/shiftable) |
-| maintainability         |  [![Maintainability](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/maintainability)](https://codeclimate.com/github/pboling/shiftable/maintainability) |
-| code triage             |  [![Open Source Helpers](https://www.codetriage.com/pboling/shiftable/badges/users.svg)](https://www.codetriage.com/pboling/shiftable) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/pboling/shiftable/issues) |
-| resources               |  [![Join the chat at https://gitter.im/pboling/shiftable](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pboling/shiftable?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [Source][homepage], [Blog][blogpage] |
-| documentation           |  [on RDoc.info][documentation] |
+| gem name                |  [shiftable][rubygems] |
+| license                 |  [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)][license-ref] |
+| download rank           |  [![Downloads Today](https://img.shields.io/gem/rd/shiftable.svg)][rubygems] |
+| version                 |  [![Version](https://img.shields.io/gem/v/shiftable.svg)][rubygems] |
+| dependencies            |  [![Depfu](https://badges.depfu.com/badges/0412727b7e3b740b950a683eebc708e2/count.svg)][depfu] |
+| unit tests              |  [![unit tests](https://github.com/pboling/shiftable/actions/workflows/test.yml/badge.svg)][actions] |
+| lint status             |  [![lint status](https://github.com/pboling/shiftable/actions/workflows/style.yml/badge.svg)][actions] |
+| unsupported rubies      |  [![unsupported status](https://github.com/pboling/shiftable/actions/workflows/unsupported.yml/badge.svg)][actions] |
+| test coverage           |  [![Test Coverage](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/test_coverage)][climate_coverage] [![codecov](https://codecov.io/gh/pboling/shiftable/branch/main/graph/badge.svg?token=J1542PYN2Z)][codecov_coverage] |
+| maintainability         |  [![Maintainability](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/maintainability)][climate_maintainability] |
+| code triage             |  [![Open Source Helpers](https://www.codetriage.com/pboling/shiftable/badges/users.svg)][code_triage] [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)][issues] |
+| resources               |  [![Join the chat at https://gitter.im/pboling/shiftable](https://badges.gitter.im/Join%20Chat.svg)][chat] [![Homepage](https://img.shields.io/badge/source-github-brightgreen.svg?style=flat)][source] [![Blog](https://img.shields.io/badge/blog-railsbling-brightgreen.svg?style=flat)][blogpage] |
+| documentation           |  [![RubyDoc.info](https://img.shields.io/badge/documentation-rubydoc-brightgreen.svg?style=flat)][documentation] |
 | Spread ~♡ⓛⓞⓥⓔ♡~      |  [🌏][aboutme], [👼][angelme], [💻][coderme], [![Tweet @ Peter][followme-img]][tweetme], [🌹][politicme] |
 
 ## Compatibility
@@ -27,9 +27,8 @@ record to a new record.
 Targeted ruby compatibility is non-EOL versions of Ruby, currently 2.6, 2.7, and 3.0, but may work on older Rubies back
 to 2.0, though it is limited to 2.5 in the gemspec. Feel free to fork if you need something older! Targeted ActiveRecord
 (Rails not required) compatibility follows the same scheme
-as [Rails Security Issue maintenance policy](https://guides.rubyonrails.org/maintenance_policy.html#security-issues),
-currently 6.1, 6.0, 5.2, but it is highly likely that this code will work in any version of ActiveRecord/Rails that runs
-on Ruby 2+.
+as [Rails Security Issue maintenance policy][maintenancee_policy], currently 6.1, 6.0, 5.2, but it is highly likely that
+this code will work in any version of ActiveRecord/Rails that runs on Ruby 2+.
 
 ## Installation
 
@@ -123,9 +122,9 @@ all federation spaceships are commandeered!  You are ruined!
 class Spaceship < ActiveRecord::Base
   belongs_to :space_federation
   extend Shiftable::Collection.new belongs_to: :space_federation, has_one: :spaceship,
-                                   before_shift: lambda do |shifting_rel:, shift_to:, shift_from:|
-    shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
-  end
+                                   before_shift: lambda { |shifting_rel:, shift_to:, shift_from:|
+                                     shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
+                                   }
 end
 
 class SpaceFederation < ActiveRecord::Base
@@ -157,9 +156,9 @@ class Spaceship < ActiveRecord::Base
 
   belongs_to :space_federation
   extend Shiftable::Collection.new belongs_to: :space_federation, has_one: :spaceship,
-                                   before_shift: lambda do |shifting_rel:, shift_to:, shift_from:|
-    shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
-  end
+                                   before_shift: lambda { |shifting_rel:, shift_to:, shift_from:|
+                                     shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
+                                   }
 end
 
 class SpaceFederation < ActiveRecord::Base
@@ -185,10 +184,9 @@ push git commits and the created tag, and push the `.gem` file to [rubygems.org]
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub
-at [https://github.com/pboling/shiftable](https://github.com/pboling/shiftable). This project is intended to be a safe,
-welcoming space for collaboration, and contributors are expected to adhere to
-the [code of conduct](https://github.com/pboling/shiftable/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at [https://github.com/pboling/shiftable][source]. This project is
+intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to
+the [code of conduct][conduct].
 
 ## Contributors
 
@@ -199,7 +197,7 @@ Made with [contributors-img](https://contrib.rocks).
 ## Code of Conduct
 
 Everyone interacting in the Shiftable project's codebases, issue trackers, chat rooms and mailing lists is expected to
-follow the [code of conduct](https://github.com/pboling/shiftable/blob/master/CODE_OF_CONDUCT.md).
+follow the [code of conduct][conduct].
 
 ## Versioning
 
@@ -214,18 +212,22 @@ the [Pessimistic Version Constraint][pvc] with two digits of precision.
 For example:
 
 ```ruby
-spec.add_dependency "shiftable", "~> 0.2"
+spec.add_dependency "shiftable", "~> 0.4"
 ```
 
 ## License
 
 The gem is available as open source under the terms of
-the [MIT License](https://opensource.org/licenses/MIT) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+the [MIT License][license] [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)][license-ref]
 .
 
 * Copyright (c) 2021 [Peter H. Boling][peterboling] of [Rails Bling][railsbling]
 
+[conduct]: https://github.com/pboling/shiftable/blob/master/CODE_OF_CONDUCT.md
+
 [license]: LICENSE
+
+[license-ref]: https://opensource.org/licenses/MIT
 
 [semver]: http://semver.org/
 
@@ -247,8 +249,28 @@ the [MIT License](https://opensource.org/licenses/MIT) [![License: MIT](https://
 
 [politicme]: https://nationalprogressiveparty.org
 
-[documentation]: http://rdoc.info/github/pboling/shiftable/frames
+[documentation]: https://rubydoc.info/github/pboling/shiftable/main
 
-[homepage]: https://github.com/pboling/shiftable/
+[source]: https://github.com/pboling/shiftable/
+
+[actions]: https://github.com/pboling/shiftable/actions
+
+[issues]: https://github.com/pboling/shiftable/issues
+
+[climate_maintainability]: https://codeclimate.com/github/pboling/shiftable/maintainability
+
+[climate_coverage]: https://codeclimate.com/github/pboling/shiftable/test_coverage
+
+[codecov_coverage]: https://codecov.io/gh/pboling/shiftable
+
+[code_triage]: https://www.codetriage.com/pboling/shiftable
+
+[depfu]: https://depfu.com/github/pboling/shiftable?project_id=32594
 
 [blogpage]: http://www.railsbling.com/tags/shiftable/
+
+[rubygems]: https://rubygems.org/gems/shiftable
+
+[chat]: https://gitter.im/pboling/shiftable?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
+[maintenancee_policy]: https://guides.rubyonrails.org/maintenance_policy.html#security-issues
