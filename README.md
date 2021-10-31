@@ -7,20 +7,15 @@ record to a new record.
 
 | Project                 |  Shiftable |
 |------------------------ | ----------------------- |
-| gem name                |  [shiftable][rubygems] |
-| license                 |  [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)][license-ref] |
-| download rank           |  [![Downloads Today](https://img.shields.io/gem/rd/shiftable.svg)][rubygems] |
-| version                 |  [![Version](https://img.shields.io/gem/v/shiftable.svg)][rubygems] |
-| dependencies            |  [![Depfu](https://badges.depfu.com/badges/0412727b7e3b740b950a683eebc708e2/count.svg)][depfu] |
-| unit tests              |  [![unit tests](https://github.com/pboling/shiftable/actions/workflows/test.yml/badge.svg)][actions] |
-| lint status             |  [![lint status](https://github.com/pboling/shiftable/actions/workflows/style.yml/badge.svg)][actions] |
-| unsupported rubies      |  [![unsupported status](https://github.com/pboling/shiftable/actions/workflows/unsupported.yml/badge.svg)][actions] |
-| test coverage           |  [![Test Coverage](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/test_coverage)][climate_coverage] [![codecov](https://codecov.io/gh/pboling/shiftable/branch/main/graph/badge.svg?token=J1542PYN2Z)][codecov_coverage] |
-| maintainability         |  [![Maintainability](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/maintainability)][climate_maintainability] |
+| name & license          |  [![RubyDoc.info](https://img.shields.io/badge/name-shiftable-brightgreen.svg?style=flat)][rubygems] [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)][license-ref] |
+| version & downloads     |  [![Version](https://img.shields.io/gem/v/shiftable.svg)][rubygems] [![Downloads Today](https://img.shields.io/gem/rd/shiftable.svg)][rubygems] |
+| dependencies & linting  |  [![Depfu](https://badges.depfu.com/badges/0412727b7e3b740b950a683eebc708e2/count.svg)][depfu] [![lint status](https://github.com/pboling/shiftable/actions/workflows/style.yml/badge.svg)][actions] |
+| unit tests              |  [![supported rubies](https://github.com/pboling/shiftable/actions/workflows/test.yml/badge.svg)][actions] [![unsupported status](https://github.com/pboling/shiftable/actions/workflows/unsupported.yml/badge.svg)][actions] |
+| coverage & maintainability |  [![Test Coverage](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/test_coverage)][climate_coverage] [![codecov](https://codecov.io/gh/pboling/shiftable/branch/main/graph/badge.svg?token=J1542PYN2Z)][codecov_coverage] [![Maintainability](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/maintainability)][climate_maintainability] |
 | code triage             |  [![Open Source Helpers](https://www.codetriage.com/pboling/shiftable/badges/users.svg)][code_triage] [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)][issues] |
 | resources               |  [![Join the chat at https://gitter.im/pboling/shiftable](https://badges.gitter.im/Join%20Chat.svg)][chat] [![Homepage](https://img.shields.io/badge/source-github-brightgreen.svg?style=flat)][source] [![Blog](https://img.shields.io/badge/blog-railsbling-brightgreen.svg?style=flat)][blogpage] |
 | documentation           |  [![RubyDoc.info](https://img.shields.io/badge/documentation-rubydoc-brightgreen.svg?style=flat)][documentation] |
-| Spread ~♡ⓛⓞⓥⓔ♡~      |  [🌏][aboutme], [👼][angelme], [💻][coderme], [![Tweet @ Peter][followme-img]][tweetme], [🌹][politicme] |
+| Spread ~♡ⓛⓞⓥⓔ♡~      |  [![Liberapay Patrons](https://img.shields.io/liberapay/patrons/pboling.svg?logo=liberapay)][liberapay_donate] <img src=""> [🌏][aboutme], [👼][angelme], [💻][coderme], [![Tweet @ Peter][followme-img]][tweetme], [🌹][politicme] |
 
 ## Compatibility
 
@@ -274,3 +269,5 @@ the [MIT License][license] [![License: MIT](https://img.shields.io/badge/License
 [chat]: https://gitter.im/pboling/shiftable?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 [maintenancee_policy]: https://guides.rubyonrails.org/maintenance_policy.html#security-issues
+
+[liberapay_donate]: https://liberapay.com/pboling/donate
