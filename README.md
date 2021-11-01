@@ -5,16 +5,15 @@ Do your Spaceships belong to Captains, but sometimes a Captain will retire, and 
 We've all been there. This gem provides structure around the process of "shifting" your records from one associated
 record to a new record.
 
-| Project                 |  Shiftable |
-|------------------------ | ----------------------- |
-| name, license, docs     |  [![RubyDoc.info](https://img.shields.io/badge/name-shiftable-brightgreen.svg?style=flat)][rubygems] [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)][license-ref] [![RubyDoc.info](https://img.shields.io/badge/documentation-rubydoc-brightgreen.svg?style=flat)][documentation] |
-| version & downloads     |  [![Version](https://img.shields.io/gem/v/shiftable.svg)][rubygems] [![Downloads Today](https://img.shields.io/gem/rd/shiftable.svg)][rubygems] |
-| dependencies & linting  |  [![Depfu](https://badges.depfu.com/badges/0412727b7e3b740b950a683eebc708e2/count.svg)][depfu] [![lint status](https://github.com/pboling/shiftable/actions/workflows/style.yml/badge.svg)][actions] |
-| unit tests              |  [![supported rubies](https://github.com/pboling/shiftable/actions/workflows/supported.yml/badge.svg)][actions] [![unsupported status](https://github.com/pboling/shiftable/actions/workflows/unsupported.yml/badge.svg)][actions] |
+| Project                    |  Shiftable |
+|--------------------------- | ----------------------- |
+| name, license, docs        |  [![RubyGems.org](https://img.shields.io/badge/name-shiftable-brightgreen.svg?style=flat)][rubygems] [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)][license-ref] [![RubyDoc.info](https://img.shields.io/badge/documentation-rubydoc-brightgreen.svg?style=flat)][documentation] |
+| version & downloads        |  [![Version](https://img.shields.io/gem/v/shiftable.svg)][rubygems] [![Downloads Today](https://img.shields.io/gem/rd/shiftable.svg)][rubygems] [![Homepage](https://img.shields.io/badge/source-github-brightgreen.svg?style=flat)][source] |
+| dependencies & linting     |  [![Depfu](https://badges.depfu.com/badges/0412727b7e3b740b950a683eebc708e2/count.svg)][depfu] [![lint status](https://github.com/pboling/shiftable/actions/workflows/style.yml/badge.svg)][actions] |
+| unit tests                 |  [![supported rubies](https://github.com/pboling/shiftable/actions/workflows/supported.yml/badge.svg)][actions] [![unsupported status](https://github.com/pboling/shiftable/actions/workflows/unsupported.yml/badge.svg)][actions] |
 | coverage & maintainability |  [![Test Coverage](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/test_coverage)][climate_coverage] [![codecov](https://codecov.io/gh/pboling/shiftable/branch/main/graph/badge.svg?token=J1542PYN2Z)][codecov_coverage] [![Maintainability](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/maintainability)][climate_maintainability] |
-| code triage             |  [![Open Source Helpers](https://www.codetriage.com/pboling/shiftable/badges/users.svg)][code_triage] [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)][issues] |
-| resources               |  [![Join the chat at https://gitter.im/pboling/shiftable](https://badges.gitter.im/Join%20Chat.svg)][chat] [![Homepage](https://img.shields.io/badge/source-github-brightgreen.svg?style=flat)][source] [![Blog](https://img.shields.io/badge/blog-railsbling-brightgreen.svg?style=flat)][blogpage] |
-| Spread ~♡ⓛⓞⓥⓔ♡~      |  [![Liberapay Patrons](https://img.shields.io/liberapay/patrons/pboling.svg?logo=liberapay)][liberapay_donate] [🌏][aboutme], [👼][angelme], [💻][coderme], [![Tweet @ Peter][followme-img]][tweetme], [🌹][politicme] |
+| resources                  |  [![Discussion](https://img.shields.io/badge/discussions-github-brightgreen.svg?style=flat)][gh_discussions] [![Join the chat at https://gitter.im/pboling/shiftable](https://badges.gitter.im/Join%20Chat.svg)][chat]  [![Blog](https://img.shields.io/badge/blog-railsbling-brightgreen.svg?style=flat)][blogpage] |
+| Spread ~♡ⓛⓞⓥⓔ♡~         |  [![Open Source Helpers](https://www.codetriage.com/pboling/shiftable/badges/users.svg)][code_triage] [![Liberapay Patrons](https://img.shields.io/liberapay/patrons/pboling.svg?logo=liberapay)][liberapay_donate] [🌏][aboutme] [👼][angelme] [💻][coderme] [🌹][politicme] [![Tweet @ Peter][followme-img]][tweetme] |
 
 ## Compatibility
 
@@ -212,10 +211,20 @@ spec.add_dependency "shiftable", "~> 0.4"
 ## License
 
 The gem is available as open source under the terms of
-the [MIT License][license] [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)][license-ref]
-.
+the [MIT License][license] [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)][license-ref].
+See [LICENSE][license] for the official [Copyright Notice][copyright-notice-explainer].
 
 * Copyright (c) 2021 [Peter H. Boling][peterboling] of [Rails Bling][railsbling]
+
+## Contact
+
+Author and maintainer is Peter Boling ([@pboling][gh_sponsors]).
+
+Comments are welcome in the [GitHub Discussions][gh_discussions] board.
+
+[copyright-notice-explainer]: https://opensource.stackexchange.com/questions/5778/why-do-licenses-such-as-the-mit-license-specify-a-single-year
+
+[gh_discussions]: https://github.com/pboling/shiftable/discussions
 
 [conduct]: https://github.com/pboling/shiftable/blob/master/CODE_OF_CONDUCT.md
 
@@ -270,3 +279,5 @@ the [MIT License][license] [![License: MIT](https://img.shields.io/badge/License
 [maintenancee_policy]: https://guides.rubyonrails.org/maintenance_policy.html#security-issues
 
 [liberapay_donate]: https://liberapay.com/pboling/donate
+
+[gh_sponsors]: https://github.com/sponsors/pboling
