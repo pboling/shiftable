@@ -3,7 +3,14 @@ name: Unsupported Rubies
 on:
   push:
     branches:
-      - main
+      - master
+      - '*-maintenance'
+      - '*-dev'
+    tags:
+      - '!*' # Do not execute on tags
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   test:
