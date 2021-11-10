@@ -166,6 +166,21 @@ end
 
 ... stay tuned!
 
+## More Information
+
+* RubyDoc
+  Documentation: [![RubyDoc.info](https://img.shields.io/badge/documentation-rubydoc-brightgreen.svg?style=flat)][documentation]
+* GitHub
+  Discussions: [![Discussion](https://img.shields.io/badge/discussions-github-brightgreen.svg?style=flat)][gh_discussions]
+* Live Chat on
+  Gitter: [![Join the chat at https://gitter.im/pboling/activerecord-transactionable](https://badges.gitter.im/Join%20Chat.svg)][chat]
+* Maintainer's Blog: [![Blog](https://img.shields.io/badge/blog-railsbling-brightgreen.svg?style=flat)][blogpage]
+
+## Code of Conduct
+
+Everyone interacting in the Shiftable project's codebases, issue trackers, chat rooms and mailing lists is expected to
+follow the [code of conduct][conduct].
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can
@@ -177,20 +192,13 @@ push git commits and the created tag, and push the `.gem` file to [rubygems.org]
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at [https://github.com/pboling/shiftable][source]. This project is
-intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to
-the [code of conduct][conduct].
+See [CONTRIBUTING.md][contributing]
 
 ## Contributors
 
 [![Contributors](https://contrib.rocks/image?repo=pboling/shiftable)]("https://github.com/pboling/shiftable/graphs/contributors")
 
 Made with [contributors-img](https://contrib.rocks).
-
-## Code of Conduct
-
-Everyone interacting in the Shiftable project's codebases, issue trackers, chat rooms and mailing lists is expected to
-follow the [code of conduct][conduct].
 
 ## Versioning
 
@@ -208,6 +216,14 @@ For example:
 spec.add_dependency "shiftable", "~> 0.4"
 ```
 
+## Contact
+
+Author and maintainer is Peter Boling ([@pboling][gh_sponsors]).
+
+Comments are welcome in the [GitHub Discussions][gh_discussions] board.
+
+For security-related issues see [SECURITY][security].
+
 ## License
 
 The gem is available as open source under the terms of
@@ -216,19 +232,15 @@ See [LICENSE][license] for the official [Copyright Notice][copyright-notice-expl
 
 * Copyright (c) 2021 [Peter H. Boling][peterboling] of [Rails Bling][railsbling]
 
-## Contact
-
-Author and maintainer is Peter Boling ([@pboling][gh_sponsors]).
-
-Comments are welcome in the [GitHub Discussions][gh_discussions] board.
-
 [copyright-notice-explainer]: https://opensource.stackexchange.com/questions/5778/why-do-licenses-such-as-the-mit-license-specify-a-single-year
 
 [gh_discussions]: https://github.com/pboling/shiftable/discussions
 
 [conduct]: https://github.com/pboling/shiftable/blob/master/CODE_OF_CONDUCT.md
 
-[license]: LICENSE
+[security]: https://github.com/pboling/shiftable/blob/master/SECURITY.md
+
+[license]: https://github.com/pboling/shiftable/blob/master/LICENSE.txt
 
 [license-ref]: https://opensource.org/licenses/MIT
 
