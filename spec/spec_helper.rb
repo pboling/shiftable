@@ -17,6 +17,7 @@ require "shiftable"
 require "config/active_record"
 require "config/factory_bot"
 require "rspec_config/database_cleaner"
+require "rspec_config/factory_bot"
 require "rspec_config/matchers"
 require "shared_examples/factories"
 require "shared_examples/shiftable_single"
@@ -31,11 +32,5 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
-  end
-
-  config.include FactoryBot::Syntax::Methods
-
-  config.before(:suite) do
-    FactoryBot.find_definitions
   end
 end
