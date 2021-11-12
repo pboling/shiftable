@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activerecord", ">= 5"
+  spec.add_development_dependency "activerecord-transactionable", ">= 3"
   spec.add_development_dependency "byebug", "~> 11.1"
   spec.add_development_dependency "database_cleaner-active_record", "~> 2.0"
   spec.add_development_dependency "factory_bot", "~> 6.2"
@@ -32,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.10"
   spec.add_development_dependency "rspec-benchmark", "~> 0.6"
   spec.add_development_dependency "rspec-block_is_expected", "~> 1.0"
+  spec.add_development_dependency "silent_stream", "~> 1"
   spec.add_development_dependency "sqlite3", "~> 1"
   spec.add_development_dependency "yard", ">= 0.9.20"
 end

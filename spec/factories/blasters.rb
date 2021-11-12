@@ -26,5 +26,11 @@ FactoryBot.define do
     trait :big do
       type { "BigBlaster" }
     end
+    trait :laser_npc_round_blaster do
+      type { "LaserBlasterNPCRoundBlaster" }
+    end
+    trait :alien_npc_round_blaster do
+      type { "AlienBlasterNPCRoundBlaster" }
+    end
   end
 end

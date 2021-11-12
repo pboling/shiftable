@@ -14,14 +14,14 @@
 #             belongs_to: :captain,
 #             has_one: :spaceship,
 #             precheck: true,
-#             before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
+#             before_shift: ->(shifting_rel) { shifting_rel.result..ownership_changes += 1 }
 #           )
 #   end
 #
 module Shiftable
   # Inheriting from Module is a powerful pattern. If you like it checkout the debug_logging gem!
   class Single < Module
-    def initialize(belongs_to:, has_one:, method_prefix: nil, precheck: true, before_shift: nil)
+    def initialize(belongs_to:, has_one:, method_prefix: nil, precheck: true, before_shift: nil, wrapper: nil)
       # Ruby's Module initializer doesn't take any arguments
       super()
 
@@ -44,7 +44,8 @@ module Shiftable
           method_prefix: method_prefix,
           # will prevent the save if it returns false
           # allows for any custom logic to be run, such as setting attributes, prior to the shift (save).
-          before_shift: before_shift
+          before_shift: before_shift,
+          wrapper: wrapper
         },
         type: :sg
       )

@@ -24,6 +24,10 @@ module Shiftable
       raise ArgumentError, "exactly two distinct associations must be provided" if invalid_number_of_associations?
     end
 
+    def wrapper
+      options[:wrapper] || {}
+    end
+
     def polymorphic_type
       options.dig(:polymorphic, :type)
     end
@@ -77,10 +81,11 @@ module Shiftable
           to: shift_to,
           from: shift_from,
           column: shift_column,
-          base: base
+          base: base,
+          wrapper: wrapper
         )
-        shifting_rel.shift do |result|
-          before_shift&.call(shifting_rel: result, shift_to: shift_to, shift_from: shift_from)
+        shifting_rel.shift do
+          before_shift&.call(shifting_rel)
         end
       end
     end
@@ -101,10 +106,11 @@ module Shiftable
             as: polymorphic_as,
             id_column: shift_pcx_column
           },
-          base: base
+          base: base,
+          wrapper: wrapper
         )
-        shifting_rel.shift do |result|
-          before_shift&.call(shifting_rel: result, shift_to: shift_to, shift_from: shift_from)
+        shifting_rel.shift do
+          before_shift&.call(shifting_rel)
         end
       end
     end
@@ -125,12 +131,13 @@ module Shiftable
           to: shift_to,
           from: shift_from,
           column: shift_column,
-          base: base
+          base: base,
+          wrapper: wrapper
         ) do
           !precheck || !shift_to.send(has_rel)
         end
-        shifting.shift do |result|
-          before_shift&.call(shifting: result, shift_to: shift_to, shift_from: shift_from)
+        shifting.shift do
+          before_shift&.call(shifting)
         end
       end
     end

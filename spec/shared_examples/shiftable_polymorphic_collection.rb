@@ -2,7 +2,7 @@
 
 # Usage:
 #
-#   it_behaves_like "has a shiftable polymorphic collection" do
+#   it_behaves_like "is a shiftable polymorphic collection" do
 #     let(:factory) { :space_federation }
 #     let(:shift_to) { create :space_federation }
 #     let(:shift_from) { create :space_federation }
@@ -13,7 +13,7 @@
 #     let(:static_polymorph) { create :space_treaty_signature, space_treaty: space_treaty, signatory: static_signatory }
 #     let(:method_prefix) { "space_federation_" }
 #   end
-shared_examples_for "has a shiftable polymorphic collection" do
+shared_examples_for "is a shiftable polymorphic collection" do
   describe "#shift_pcx" do
     context "when shift_to is nil" do
       subject(:shift_pcx) { described_class.send(:"#{method_prefix}shift_pcx", shift_to: nil, shift_from: shift_from) }

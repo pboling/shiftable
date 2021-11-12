@@ -12,6 +12,11 @@
 ### Removed
 
 
+## [0.6.0] - 2021-11-12
+### Added
+
+- Support for wrappers/hooks around each record shift, and around the entire set (see examples in specs or README)
+
 ## [0.5.1] - 2021-11-12
 ### Fixed
 

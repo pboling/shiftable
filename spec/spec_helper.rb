@@ -15,6 +15,8 @@ require "simplecov" if coverage
 require "byebug" if debug
 require "faker"
 require "rspec/block_is_expected"
+require "activerecord/transactionable"
+require "silent_stream"
 
 # This gem
 require "shiftable"
@@ -25,6 +27,7 @@ require "config/factory_bot"
 require "rspec_config/database_cleaner"
 require "rspec_config/factory_bot"
 require "rspec_config/matchers"
+require "rspec_config/silent_stream"
 require "shared_examples/factories"
 require "shared_examples/shiftable_single"
 require "shared_examples/shiftable_collection"

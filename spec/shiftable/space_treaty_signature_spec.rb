@@ -14,7 +14,7 @@ RSpec.describe SpaceTreatySignature do
     end
   end
 
-  it_behaves_like "has a shiftable polymorphic collection" do
+  it_behaves_like "is a shiftable polymorphic collection" do
     let(:factory) { :space_federation }
     let(:shift_to) { create :space_federation }
     let(:shift_from) { create :space_federation }

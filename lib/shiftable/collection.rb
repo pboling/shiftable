@@ -16,7 +16,7 @@ module Shiftable
   class Collection < Module
     # associations: belongs_to, has_many
     # options: method_prefix, before_shift
-    def initialize(belongs_to:, has_many:, polymorphic: nil, method_prefix: nil, before_shift: nil)
+    def initialize(belongs_to:, has_many:, polymorphic: nil, method_prefix: nil, before_shift: nil, wrapper: nil)
       # Ruby's Module initializer doesn't take any arguments
       super()
 
@@ -39,7 +39,12 @@ module Shiftable
           method_prefix: method_prefix,
           # will prevent the save if it returns false
           # allows for any custom logic to be run, such as setting attributes, prior to the shift (save).
-          before_shift: before_shift
+          before_shift: before_shift,
+          # wrapper: {
+          #   all: ->() { klass.transaction_wrapper { yield } },
+          #   each: ->() { klass.transaction_wrapper { yield } },
+          # }
+          wrapper: wrapper
         },
         type: polymorphic ? :pcx : :cx
       )

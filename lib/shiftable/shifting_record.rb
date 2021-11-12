@@ -12,11 +12,33 @@ module Shiftable
       return false unless found?
 
       result.send("#{column}=", to.id)
-      @run_save = yield result if block_given?
-      result.save if run_save
+      @run_save = yield if block_given?
+      return nil unless run_save
+
+      run_save!
     end
 
     private
+
+    def run_save!
+      if shift_all_wrapper
+        shift_all_wrapper.call(self) do
+          do_save
+        end
+      else
+        do_save
+      end
+    end
+
+    def do_save
+      if shift_each_wrapper
+        shift_each_wrapper.call(result) do
+          result.save
+        end
+      else
+        result.save
+      end
+    end
 
     def query
       base.find_by(column => from.id)

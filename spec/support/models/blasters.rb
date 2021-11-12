@@ -3,7 +3,7 @@
 # Class for testing
 class Blaster < ActiveRecord::Base
   belongs_to :captain
-  has_one :blaster_rounds
+  has_many :blaster_rounds
 end
 
 # Class for testing
@@ -38,9 +38,19 @@ class BigBlaster < Blaster
   extend Shiftable::Single.new(
     belongs_to: :captain,
     has_one: :big_blaster,
-    before_shift: lambda do |shifting:, **_|
-      shifting.ownership_changes += 1
-      shifting.name = "I-Got-Shifted-And-You-Should-Too"
+    before_shift: lambda do |shifting_rel|
+      shifting_rel.result.ownership_changes += 1
+      shifting_rel.result.name = "I-Got-Shifted-And-You-Should-Too"
     end
   )
+end
+
+# Test with each wrapper
+class AlienBlasterNPCRoundBlaster < Blaster
+  has_many :alien_blaster_npc_rounds, class_name: "AlienBlasterNPCRound", foreign_key: :blaster_id
+end
+
+# Test with all wrapper
+class LaserBlasterNPCRoundBlaster < Blaster
+  has_many :laser_blaster_npc_rounds, class_name: "LaserBlasterNPCRound", foreign_key: :blaster_id
 end

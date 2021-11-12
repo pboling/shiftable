@@ -20,8 +20,10 @@ module Shiftable
       each do |record|
         record.send("#{column}=", to.id)
       end
-      @run_save = yield result if block_given?
-      each(&:save) if run_save
+      @run_save = yield if block_given?
+      return result unless run_save
+
+      run_save!
       result
     end
 

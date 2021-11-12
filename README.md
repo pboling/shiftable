@@ -80,7 +80,7 @@ But how can you accomplish this? If you used the `shiftable` gem, won't take but
 class Spaceship < ActiveRecord::Base
   belongs_to :captain
   extend Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, precheck: true,
-                               before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
+                               before_shift: ->(shifting_rel) { shifting_rel.result.ownership_changes += 1 }
 end
 ```
 
@@ -111,11 +111,10 @@ federation!  And in a run-in with their arch-Nemesis the Plinth-inth,
 all federation spaceships are commandeered!  You are ruined!
 
 ```ruby
-
 class Spaceship < ActiveRecord::Base
   belongs_to :space_federation
   extend Shiftable::Collection.new belongs_to: :space_federation, has_many: :spaceships,
-                                   before_shift: lambda { |shifting_rel:, shift_to:, shift_from:|
+                                   before_shift: lambda { |shifting_rel|
                                      shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
                                    }
 end
@@ -155,7 +154,7 @@ class SpaceTreatySignature < ActiveRecord::Base
     belongs_to: :signatory, has_many: :space_treaty_signature,
     polymorphic: { type: "SpaceFederation", as: :signatory },
     method_prefix: "space_federation_",
-    before_shift: lambda { |shifting_rel:, shift_to:, shift_from:|
+    before_shift: lambda { |shifting_rel|
       # Each item in shifting_rel is an instance of the class where Shiftable::Collection is defined,
       #   in this case: SpaceTreatySignature
       # And each of them has a signatory which is of type "SpaceFederation",
@@ -191,6 +190,50 @@ class SpaceStation < ActiveRecord::Base
 end
 ```
 
+### Wrapping a shift
+
+For example, in a transaction.  Let's update the nemesis foundation example from above with a transaction shift_each_wrapper,
+which we'll pull from the [`activerecord-transactionable`](https://github.com/pboling/activerecord-transactionable) gem, which provides best practice framing around transactions.
+
+```ruby
+class Spaceship < ActiveRecord::Base
+  belongs_to :space_federation
+  extend Shiftable::Collection.new(
+    belongs_to: :space_federation,
+    has_many: :spaceships,
+    before_shift: lambda { |shifting_rel|
+                    shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
+                  },
+    wrapper: {
+      each: lambda { |record, &block|
+              tresult = record.transaction_wrapper(outside_rescued_errors: ActiveRecord::RecordNotUnique) do
+                puts "melon #{record.name} honey"
+                block.call # does the actual saving!
+              end
+              # NOTE: The value returned by the wrapper will also be returned by the call to `shift_cx`.
+              #       You could return the whole tresult object here, instead of just true/false!
+              tresult.success?
+            },
+      all: lambda { |rel, &block|
+             tresult = Spaceship.transaction_wrapper do
+               puts "can you eat #{rel.count} shoes"
+               block.call
+             end
+             tresult.success?
+           }
+    }
+  )
+end
+
+class SpaceFederation < ActiveRecord::Base
+  has_many :spaceships
+
+  def all_spaceships_commandeered_by(nemesis_federation)
+    Spaceship.shift_cx(shift_to: nemesis_federation, shift_from: self)
+  end
+end
+```
+
 ### Complete example
 
 Putting it all together...
@@ -207,13 +250,32 @@ end
 class Spaceship < ActiveRecord::Base
   belongs_to :captain
   extend Shiftable::Single.new belongs_to: :captain, has_one: :spaceship, precheck: true,
-                               before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
+                               before_shift: ->(shifting_rel) { shifting_rel.result.ownership_changes += 1 }
 
   belongs_to :space_federation
-  extend Shiftable::Collection.new belongs_to: :space_federation, has_many: :spaceships,
-                                   before_shift: lambda { |shifting_rel:, shift_to:, shift_from:|
-                                     shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
-                                   }
+  extend Shiftable::Collection.new(
+    belongs_to: :space_federation,
+    has_many: :spaceships,
+    before_shift: lambda { |shifting_rel|
+      shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
+    },
+    wrapper: {
+      each: lambda { |record, &block|
+              tresult = record.transaction_wrapper(outside_rescued_errors: ActiveRecord::RecordNotUnique) do
+                puts "melon #{record.name} honey"
+                block.call # does the actual saving!
+              end
+              tresult.success?
+            },
+      all: lambda { |rel, &block|
+             tresult = Spaceship.transaction_wrapper do
+               puts "can you eat #{rel.count} shoes"
+               block.call
+             end
+             tresult.success?
+           }
+    }
+  )
 end
 
 class SpaceFederation < ActiveRecord::Base

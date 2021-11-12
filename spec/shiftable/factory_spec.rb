@@ -18,7 +18,9 @@ RSpec.describe "factory definitions" do
       [:alien],
       [:alien_npc],
       [:thunder],
-      [:big]
+      [:big],
+      [:laser_npc_round_blaster],
+      [:alien_npc_round_blaster]
     ],
     captain: [[]],
     planet: [[]],
