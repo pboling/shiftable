@@ -104,7 +104,7 @@ end
 
 This works as you would expect with STI (single table inheritance) classes, i.e. when defined on a subclass, only the records of that class get shifted.
 
-### Multiple association on a single class
+### Multiple associations on a single class
 
 What if the captain and the spaceship have a boss... the space
 federation!  And in a run-in with their arch-Nemesis the Plinth-inth,
@@ -114,7 +114,7 @@ all federation spaceships are commandeered!  You are ruined!
 
 class Spaceship < ActiveRecord::Base
   belongs_to :space_federation
-  extend Shiftable::Collection.new belongs_to: :space_federation, has_one: :spaceship,
+  extend Shiftable::Collection.new belongs_to: :space_federation, has_many: :spaceships,
                                    before_shift: lambda { |shifting_rel:, shift_to:, shift_from:|
                                      shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
                                    }
@@ -148,7 +148,7 @@ class Spaceship < ActiveRecord::Base
                                before_shift: ->(shifting:, shift_to:, shift_from:) { shifting.ownership_changes += 1 }
 
   belongs_to :space_federation
-  extend Shiftable::Collection.new belongs_to: :space_federation, has_one: :spaceship,
+  extend Shiftable::Collection.new belongs_to: :space_federation, has_many: :spaceships,
                                    before_shift: lambda { |shifting_rel:, shift_to:, shift_from:|
                                      shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
                                    }
