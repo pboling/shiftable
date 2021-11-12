@@ -153,7 +153,7 @@ class SpaceTreatySignature < ActiveRecord::Base
   #   )
   extend Shiftable::Collection.new(
     belongs_to: :signatory, has_many: :space_treaty_signature,
-    polymorphic_type: "SpaceFederation",
+    polymorphic: { type: "SpaceFederation", as: :signatory },
     method_prefix: "space_federation_",
     before_shift: lambda { |shifting_rel:, shift_to:, shift_from:|
       # Each item in shifting_rel is an instance of the class where Shiftable::Collection is defined,
@@ -171,7 +171,7 @@ class SpaceFederation < ActiveRecord::Base
   has_many :treaty_planets, class_name: "Planet", through: :space_treaty_signatures, as: :signatory
   has_many :treaty_stations, class_name: "SpaceStation", through: :space_treaty_signatures, as: :signatory
   def assimilate_from(other_federation)
-    SpaceTreatySignature.space_federation_shift_cx(shift_to: self, shift_from: other_federation)
+    SpaceTreatySignature.space_federation_shift_pcx(shift_to: self, shift_from: other_federation)
   end
 end
 
@@ -189,7 +189,7 @@ class SpaceStation < ActiveRecord::Base
   has_many :treaty_federations, class_name: "SpaceFederation", through: :space_treaty_signatures, as: :signatory
   has_many :treaty_planets, class_name: "Planet", through: :space_treaty_signatures, as: :signatory
 end
-```#<--rubocop/md-->#<--rubocop/md-->`
+```
 
 ### Complete example
 
@@ -241,7 +241,7 @@ class SpaceTreatySignature < ActiveRecord::Base
   belongs_to :signatory, polymorphic: true
   extend Shiftable::Collection.new(
     belongs_to: :signatory, has_many: :space_treaty_signatures,
-    polymorphic_type: "SpaceFederation",
+    polymorphic: { type: "SpaceFederation", as: :signatory },
     method_prefix: "space_federation_"
   )
 end
