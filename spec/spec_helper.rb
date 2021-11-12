@@ -28,6 +28,7 @@ require "rspec_config/matchers"
 require "shared_examples/factories"
 require "shared_examples/shiftable_single"
 require "shared_examples/shiftable_collection"
+require "shared_examples/shiftable_polymorphic_collection"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

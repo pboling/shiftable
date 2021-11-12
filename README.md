@@ -129,6 +129,68 @@ class SpaceFederation < ActiveRecord::Base
 end
 ```
 
+### Polymorphism and has_many through
+
+```ruby
+class SpaceTreaty < ActiveRecord::Base
+  has_many :space_treaty_signature
+end
+
+class SpaceTreatySignature < ActiveRecord::Base
+  belongs_to :space_treaty
+  belongs_to :signatory, polymorphic: true
+  # When two space federations assimilate (i.e. merge) to form a single larger federation,
+  #   they become party to (i.e. signatories of) all the treaties that had been signed by either.
+  # In practical terms, this means:
+  #
+  #   surviving_federation = SpaceFederation.find(1)
+  #   assimilated_federation = SpaceFederation.find(2)
+  #   SpaceTreatySignature.where(
+  #     signatory_id: assimilated_federation_id,
+  #     signatory_type: "SpaceFederation"
+  #   ).update_all(
+  #     signatory_id: surviving_federation.id
+  #   )
+  extend Shiftable::Collection.new(
+    belongs_to: :signatory, has_many: :space_treaty_signature,
+    polymorphic_type: "SpaceFederation",
+    method_prefix: "space_federation_",
+    before_shift: lambda { |shifting_rel:, shift_to:, shift_from:|
+      # Each item in shifting_rel is an instance of the class where Shiftable::Collection is defined,
+      #   in this case: SpaceTreatySignature
+      # And each of them has a signatory which is of type "SpaceFederation",
+      #   because a polymorphic collection only targets one type.
+      # shifting_rel.each { |signature| signature.signatory == "SpaceFederation" }
+    }
+  )
+end
+
+class SpaceFederation < ActiveRecord::Base
+  has_many :space_treaty_signature, as: :signatory
+  has_many :space_treaties, through: :space_treaty_signatures, as: :signatory
+  has_many :treaty_planets, class_name: "Planet", through: :space_treaty_signatures, as: :signatory
+  has_many :treaty_stations, class_name: "SpaceStation", through: :space_treaty_signatures, as: :signatory
+  def assimilate_from(other_federation)
+    SpaceTreatySignature.space_federation_shift_cx(shift_to: self, shift_from: other_federation)
+  end
+end
+
+# Including Planet and SpaceStation, for completeness of the example as the other "types" of polymorphic signatories
+class Planet < ActiveRecord::Base
+  has_many :space_treaty_signature, as: :signatory
+  has_many :space_treaties, through: :space_treaty_signatures
+  has_many :treaty_federations, class_name: "SpaceFederation", through: :space_treaty_signatures, as: :signatory
+  has_many :treaty_stations, class_name: "SpaceStation", through: :space_treaty_signatures, as: :signatory
+end
+
+class SpaceStation < ActiveRecord::Base
+  has_many :space_treaty_signature, as: :signatory
+  has_many :space_treaties, through: :space_treaty_signatures
+  has_many :treaty_federations, class_name: "SpaceFederation", through: :space_treaty_signatures, as: :signatory
+  has_many :treaty_planets, class_name: "Planet", through: :space_treaty_signatures, as: :signatory
+end
+```#<--rubocop/md-->#<--rubocop/md-->`
+
 ### Complete example
 
 Putting it all together...
@@ -157,10 +219,46 @@ end
 class SpaceFederation < ActiveRecord::Base
   has_many :captains
   has_many :spaceships
+  has_many :space_treaty_signature, as: :signatory
+  has_many :space_treaties, through: :space_treaty_signatures, as: :signatory
+  has_many :treaty_planets, class_name: "Planet", through: :space_treaty_signatures, as: :signatory
+  has_many :treaty_stations, class_name: "SpaceStation", through: :space_treaty_signatures, as: :signatory
+
+  def assimilate_from(other_federation)
+    SpaceTreatySignature.space_federation_shift_cx(shift_to: self, shift_from: other_federation)
+  end
 
   def all_spaceships_commandeered_by(nemesis_federation)
     Spaceship.shift_cx(shift_to: nemesis_federation, shift_from: self)
   end
+end
+class SpaceTreaty < ActiveRecord::Base
+  has_many :space_treaty_signatures
+end
+
+class SpaceTreatySignature < ActiveRecord::Base
+  belongs_to :space_treaty
+  belongs_to :signatory, polymorphic: true
+  extend Shiftable::Collection.new(
+    belongs_to: :signatory, has_many: :space_treaty_signatures,
+    polymorphic_type: "SpaceFederation",
+    method_prefix: "space_federation_"
+  )
+end
+
+# Including Planet and SpaceStation, for completeness of the example as the other "types" of polymorphic signatories
+class Planet < ActiveRecord::Base
+  has_many :space_treaty_signatures, as: :signatory
+  has_many :space_treaties, through: :space_treaty_signatures
+  has_many :treaty_federations, class_name: "SpaceFederation", through: :space_treaty_signatures, as: :signatory
+  has_many :treaty_stations, class_name: "SpaceStation", through: :space_treaty_signatures, as: :signatory
+end
+
+class SpaceStation < ActiveRecord::Base
+  has_many :space_treaty_signature, as: :signatory
+  has_many :space_treaties, through: :space_treaty_signatures
+  has_many :treaty_federations, class_name: "SpaceFederation", through: :space_treaty_signatures, as: :signatory
+  has_many :treaty_planets, class_name: "Planet", through: :space_treaty_signatures, as: :signatory
 end
 ```
 

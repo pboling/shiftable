@@ -1,7 +1,28 @@
 ## [Unreleased]
 
-## [0.4.0] - 2021-10-27
+### Added
 
+
+### Changed
+
+
+### Fixed
+
+
+### Removed
+
+
+## [0.5.0] - 2021-11-12
+### Added
+
+- Support for Polymorphic associations (see examples in specs or README)
+
+## [0.4.1] - 2021-11-10
+### Fixed
+
+- Documentation typos in README
+
+## [0.4.0] - 2021-10-27
 ### Changed
 
 - option :preflight_checks renamed to :precheck
@@ -11,7 +32,6 @@
 - Even more 100% spec coverage
 
 ## [0.3.0] - 2021-10-26
-
 ### Changed
 
 - Internal rewrite to improve maintainability
@@ -22,7 +42,6 @@
 - Even more 100% spec coverage
 
 ## [0.2.0] - 2021-10-24
-
 ### Changed
 
 - option `before_save` is now `before_shift` as originally documented
@@ -34,7 +53,6 @@
 - Documentation
 
 ## [0.1.1] - 2021-10-23
-
 ### Fixed
 
 - Github Actions build
@@ -44,7 +62,6 @@
 - Linting
 
 ## [0.1.0] - 2021-10-23
-
 ### Added
 
 - Initial release

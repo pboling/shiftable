@@ -3,6 +3,7 @@
 require_relative "shiftable/version"
 require_relative "shiftable/shifting"
 require_relative "shiftable/shifting_record"
+require_relative "shiftable/shifting_polymorphic_relation"
 require_relative "shiftable/shifting_relation"
 require_relative "shiftable/mod_signature"
 require_relative "shiftable/collection"

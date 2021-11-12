@@ -70,7 +70,7 @@ module Shiftable
         prefix = signature.method_prefix
         Module.new do
           define_method(:"#{prefix}shift_column") do
-            signature.shift_column
+            signature.send("shift_#{signature.type}_column")
           end
           define_method(:"#{prefix}shift_single") do |shift_to:, shift_from:|
             signature.shift_data!(shift_to: shift_to, shift_from: shift_from)

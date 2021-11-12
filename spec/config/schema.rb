@@ -33,4 +33,21 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer :space_federation_id, null: false
     t.boolean :spent, null: false, default: false
   end
+
+  create_table :space_treaties, force: true do |t|
+    t.string :name, null: false
+  end
+
+  create_table :space_treaty_signatures, force: true do |t|
+    t.integer :space_treaty_id, null: false
+    t.references :signatory, polymorphic: true
+  end
+
+  create_table :space_stations, force: true do |t|
+    t.string :name, null: false
+  end
+
+  create_table :planets, force: true do |t|
+    t.string :name, null: false
+  end
 end

@@ -16,7 +16,7 @@ module Shiftable
   class Collection < Module
     # associations: belongs_to, has_many
     # options: method_prefix, before_shift
-    def initialize(belongs_to:, has_many:, method_prefix: nil, before_shift: nil)
+    def initialize(belongs_to:, has_many:, polymorphic: nil, method_prefix: nil, before_shift: nil)
       # Ruby's Module initializer doesn't take any arguments
       super()
 
@@ -35,12 +35,13 @@ module Shiftable
           has_many: has_many.to_s.to_sym
         },
         options: {
+          polymorphic: polymorphic,
           method_prefix: method_prefix,
           # will prevent the save if it returns false
           # allows for any custom logic to be run, such as setting attributes, prior to the shift (save).
           before_shift: before_shift
         },
-        type: :cx
+        type: polymorphic ? :pcx : :cx
       )
     end
 
@@ -62,11 +63,12 @@ module Shiftable
     module ShiftCollectionModulizer
       def to_mod(signature)
         prefix = signature.method_prefix
+        type = signature.type
         Module.new do
-          define_method(:"#{prefix}shift_cx_column") do
-            signature.shift_column
+          define_method(:"#{prefix}shift_#{type}_column") do
+            signature.send("shift_#{type}_column")
           end
-          define_method(:"#{prefix}shift_cx") do |shift_to:, shift_from:|
+          define_method(:"#{prefix}shift_#{type}") do |shift_to:, shift_from:|
             signature.shift_data!(shift_to: shift_to, shift_from: shift_from)
           end
         end

@@ -2,8 +2,8 @@
 
 module Shiftable
   class ModSignature
-    VALID_TYPES = %i[sg cx].freeze
-    VALID_ASSOCIATIONS = { sg: %i[belongs_to has_one], cx: %i[belongs_to has_many] }.freeze
+    VALID_ASSOCIATIONS = { sg: %i[belongs_to has_one], cx: %i[belongs_to has_many], pcx: %i[belongs_to has_many] }.freeze
+    VALID_TYPES = VALID_ASSOCIATIONS.keys.dup.freeze
     DEFAULT_BEFORE_SHIFT = ->(*_) { true }
     attr_reader :associations, :options, :type, :base
 
@@ -22,6 +22,14 @@ module Shiftable
       raise ArgumentError, "type must be one of: #{VALID_TYPES}, provided: #{type}" if invalid_type?
       raise ArgumentError, "associations must be symbols" if invalid_association_key_type?
       raise ArgumentError, "exactly two distinct associations must be provided" if invalid_number_of_associations?
+    end
+
+    def polymorphic_type
+      options.dig(:polymorphic, :type)
+    end
+
+    def polymorphic_as
+      options.dig(:polymorphic, :as)
     end
 
     def invalid_type?
@@ -48,20 +56,20 @@ module Shiftable
     end
 
     def validate_relationships
-      bt = base.reflect_on_association(belongs_to)
-      raise ArgumentError, "Unable to find belongs_to: :#{belongs_to} in #{base}" unless bt
+      bt_reflection = base.reflect_on_association(belongs_to)
+      raise ArgumentError, "Unable to find belongs_to: :#{belongs_to} in #{base}" unless bt_reflection
+      # We can't validate any further if the reflection is polymorphic
+      return true if bt_reflection.polymorphic?
 
-      klass = bt.klass
-      hr = klass.reflect_on_association(has_rel)
-      raise ArgumentError, "Unable to find #{has_rel_name}: :#{has_rel} in #{klass}" unless hr
+      klass = bt_reflection.klass
+      has_reflection = klass.reflect_on_association(has_rel)
+      raise ArgumentError, "Unable to find #{has_rel_name}: :#{has_rel} in #{klass}" unless has_reflection
     end
 
     module CxMethods
-      def has_many
+      def has_rel
         associations[:has_many]
       end
-
-      alias has_rel has_many
 
       def shift_data!(shift_to:, shift_from:)
         validate_relationships
@@ -77,12 +85,34 @@ module Shiftable
       end
     end
 
+    module PcxMethods
+      # This method could be defined for parity, but it is never used.
+      # def has_rel
+      #   associations[:has_many]
+      # end
+
+      def shift_data!(shift_to:, shift_from:)
+        validate_relationships
+        shifting_rel = ShiftingPolymorphicRelation.new(
+          to: shift_to,
+          from: shift_from,
+          column: {
+            type: polymorphic_type,
+            as: polymorphic_as,
+            id_column: shift_pcx_column
+          },
+          base: base
+        )
+        shifting_rel.shift do |result|
+          before_shift&.call(shifting_rel: result, shift_to: shift_to, shift_from: shift_from)
+        end
+      end
+    end
+
     module SgMethods
-      def has_one
+      def has_rel
         associations[:has_one]
       end
-
-      alias has_rel has_one
 
       # Do not move record if a record already exists (we are shifting a "has_one" association, after all)
       def precheck
@@ -97,7 +127,7 @@ module Shiftable
           column: shift_column,
           base: base
         ) do
-          !precheck || !shift_to.send(has_one)
+          !precheck || !shift_to.send(has_rel)
         end
         shifting.shift do |result|
           before_shift&.call(shifting: result, shift_to: shift_to, shift_from: shift_from)
@@ -122,9 +152,16 @@ module Shiftable
       options[:before_shift] || DEFAULT_BEFORE_SHIFT
     end
 
+    def shift_pcx_column
+      "#{polymorphic_as}_id"
+    end
+
     def shift_column
       reflection = base.reflect_on_association(belongs_to).klass.reflect_on_association(has_rel)
       reflection.foreign_key
     end
+
+    alias shift_sg_column shift_column
+    alias shift_cx_column shift_column
   end
 end
