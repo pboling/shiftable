@@ -12,6 +12,11 @@
 ### Removed
 
 
+## [0.5.1] - 2021-11-12
+### Fixed
+
+- Documentation typos in README
+
 ## [0.5.0] - 2021-11-12
 ### Added
 
