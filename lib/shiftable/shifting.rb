@@ -51,7 +51,7 @@ module Shiftable
     def do_saves
       if shift_each_wrapper
         each do |rec|
-          shift_each_wrapper.call(rec) do
+          shift_each_wrapper.call(self, rec) do
             bang ? rec.save! : rec.save
           end
         end

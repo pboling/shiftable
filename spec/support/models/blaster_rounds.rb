@@ -24,15 +24,15 @@ class LaserBlasterNPCRound < BlasterRound
     belongs_to: :laser_blaster_npc_round_blaster,
     has_many: :laser_blaster_npc_rounds,
     wrapper: {
-      each: lambda { |record, &block|
+      each: lambda { |rel, record, &block|
         record.transaction_wrapper(outside_rescued_errors: ActiveRecord::RecordNotUnique) do
-          puts "berry #{record.name} carmel"
+          puts "berry #{record.name} carmel #{rel.count}"
           block.call # does the actual saving!
         end
       },
-      all: lambda { |shifting_rel, &block|
+      all: lambda { |rel, &block|
         LaserBlasterNPCRound.transaction_wrapper do
-          puts "are there #{shifting_rel.count} snow cones"
+          puts "are there #{rel.count} snow cones"
           block.call
         end
       }
@@ -53,9 +53,9 @@ class AlienBlasterNPCRound < BlasterRound
     belongs_to: :alien_blaster_npc_round_blaster,
     has_many: :alien_blaster_npc_rounds,
     wrapper: {
-      each: lambda { |record, &block|
+      each: lambda { |rel, record, &block|
         record.transaction_wrapper(outside_rescued_errors: ActiveRecord::RecordNotUnique) do
-          puts "hallo from #{record.name}"
+          puts "hallo from #{record.name} #{rel.count}"
           block.call # does the actual saving!
         end
       }

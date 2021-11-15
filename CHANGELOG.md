@@ -12,6 +12,11 @@
 ### Removed
 
 
+## [0.7.0] - 2021-11-15
+### Changed
+
+- Make the `Shifting` Relation available to the `each` wrapper, as a block parameter
+
 ## [0.6.1] - 2021-11-14
 ### Added
 
@@ -92,3 +97,15 @@
 [0.3.0]: https://github.com/pboling/shiftable/releases/tag/v0.3.0
 
 [0.4.0]: https://github.com/pboling/shiftable/releases/tag/v0.4.0
+
+[0.4.1]: https://github.com/pboling/shiftable/releases/tag/v0.4.1
+
+[0.5.0]: https://github.com/pboling/shiftable/releases/tag/v0.5.0
+
+[0.5.1]: https://github.com/pboling/shiftable/releases/tag/v0.5.1
+
+[0.6.0]: https://github.com/pboling/shiftable/releases/tag/v0.6.0
+
+[0.6.1]: https://github.com/pboling/shiftable/releases/tag/v0.6.1
+
+[0.7.0]: https://github.com/pboling/shiftable/releases/tag/v0.7.0

@@ -7,9 +7,9 @@ class Spaceship < ActiveRecord::Base
     belongs_to: :captain,
     has_one: :spaceship,
     wrapper: {
-      each: lambda { |record, &block|
+      each: lambda { |rel, record, &block|
         tresult = record.transaction_wrapper(outside_rescued_errors: ActiveRecord::RecordNotUnique) do
-          puts "melon #{record.name} honey"
+          puts "melon #{record.name} honey #{rel.to.name}"
           block.call # does the actual saving!
         end
         tresult.success?

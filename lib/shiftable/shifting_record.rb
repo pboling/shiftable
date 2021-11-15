@@ -32,7 +32,7 @@ module Shiftable
 
     def do_save
       if shift_each_wrapper
-        shift_each_wrapper.call(result) do
+        shift_each_wrapper.call(self, result) do
           bang ? result.save! : result.save
         end
       else

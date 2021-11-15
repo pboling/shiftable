@@ -205,9 +205,9 @@ class Spaceship < ActiveRecord::Base
                     shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
                   },
     wrapper: {
-      each: lambda { |record, &block|
+      each: lambda { |rel, record, &block|
               tresult = record.transaction_wrapper(outside_rescued_errors: ActiveRecord::RecordNotUnique) do
-                puts "melon #{record.name} honey"
+                puts "melon #{record.name} honey #{rel.count}"
                 block.call # does the actual saving!
               end
               # NOTE: The value returned by the wrapper will also be returned by the call to `shift_cx`.
@@ -260,9 +260,9 @@ class Spaceship < ActiveRecord::Base
       shifting_rel.each { |spaceship| spaceship.federation_changes += 1 }
     },
     wrapper: {
-      each: lambda { |record, &block|
+      each: lambda { |rel, record, &block|
               tresult = record.transaction_wrapper(outside_rescued_errors: ActiveRecord::RecordNotUnique) do
-                puts "melon #{record.name} honey"
+                puts "melon #{record.name} honey #{rel.count}"
                 block.call # does the actual saving!
               end
               tresult.success?
@@ -373,7 +373,7 @@ the [Pessimistic Version Constraint][pvc] with two digits of precision.
 For example:
 
 ```ruby
-spec.add_dependency "shiftable", "~> 0.4"
+spec.add_dependency "shiftable", "~> 0.7"
 ```
 
 ## Contact
