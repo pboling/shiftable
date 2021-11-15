@@ -75,14 +75,15 @@ module Shiftable
         associations[:has_many]
       end
 
-      def shift_data!(shift_to:, shift_from:)
+      def shift_data!(shift_to:, shift_from:, bang: false)
         validate_relationships
         shifting_rel = ShiftingRelation.new(
           to: shift_to,
           from: shift_from,
           column: shift_column,
           base: base,
-          wrapper: wrapper
+          wrapper: wrapper,
+          bang: bang
         )
         shifting_rel.shift do
           before_shift&.call(shifting_rel)
@@ -96,7 +97,7 @@ module Shiftable
       #   associations[:has_many]
       # end
 
-      def shift_data!(shift_to:, shift_from:)
+      def shift_data!(shift_to:, shift_from:, bang: false)
         validate_relationships
         shifting_rel = ShiftingPolymorphicRelation.new(
           to: shift_to,
@@ -107,7 +108,8 @@ module Shiftable
             id_column: shift_pcx_column
           },
           base: base,
-          wrapper: wrapper
+          wrapper: wrapper,
+          bang: bang
         )
         shifting_rel.shift do
           before_shift&.call(shifting_rel)
@@ -125,14 +127,15 @@ module Shiftable
         options[:precheck]
       end
 
-      def shift_data!(shift_to:, shift_from:)
+      def shift_data!(shift_to:, shift_from:, bang: false)
         validate_relationships
         shifting = ShiftingRecord.new(
           to: shift_to,
           from: shift_from,
           column: shift_column,
           base: base,
-          wrapper: wrapper
+          wrapper: wrapper,
+          bang: bang
         ) do
           !precheck || !shift_to.send(has_rel)
         end

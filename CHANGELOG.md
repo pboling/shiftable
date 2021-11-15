@@ -12,6 +12,11 @@
 ### Removed
 
 
+## [0.6.1] - 2021-11-14
+### Added
+
+- Support for using save with bang (`save!`) to raise error when ActiveRecord save fails.
+
 ## [0.6.0] - 2021-11-12
 ### Added
 

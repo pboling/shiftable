@@ -3,9 +3,13 @@
 module Shiftable
   # Gets data to be shifted
   class Shifting
-    attr_reader :to, :from, :column, :base, :result, :run_save, :shift_all_wrapper, :shift_each_wrapper
+    # Public API
+    attr_accessor :result, :bang, :shift_all_wrapper, :shift_each_wrapper
+    attr_reader :to, :from
+    # Internal API
+    attr_reader :column, :base, :run_save
 
-    def initialize(to:, from:, column:, base:, wrapper:)
+    def initialize(to:, from:, column:, base:, wrapper:, bang:)
       @to = to
       @from = from
       @column = column
@@ -16,6 +20,7 @@ module Shiftable
       @run_save = true
       @shift_all_wrapper = wrapper[:all]
       @shift_each_wrapper = wrapper[:each]
+      @bang = bang
     end
 
     # def found?
@@ -47,11 +52,11 @@ module Shiftable
       if shift_each_wrapper
         each do |rec|
           shift_each_wrapper.call(rec) do
-            rec.save
+            bang ? rec.save! : rec.save
           end
         end
       else
-        each(&:save)
+        bang ? each(&:save!) : each(&:save)
       end
     end
 

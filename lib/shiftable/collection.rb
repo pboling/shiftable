@@ -73,8 +73,8 @@ module Shiftable
           define_method(:"#{prefix}shift_#{type}_column") do
             signature.send("shift_#{type}_column")
           end
-          define_method(:"#{prefix}shift_#{type}") do |shift_to:, shift_from:|
-            signature.shift_data!(shift_to: shift_to, shift_from: shift_from)
+          define_method(:"#{prefix}shift_#{type}") do |shift_to:, shift_from:, bang: false|
+            signature.shift_data!(shift_to: shift_to, shift_from: shift_from, bang: bang)
           end
         end
       end

@@ -49,10 +49,10 @@ shared_examples_for "a shiftable collection" do
       end
     end
 
-    context "when shift_from already has one" do
-      subject(:shift_cx) { described_class.shift_cx(shift_to: shift_to, shift_from: shift_from) }
+    context "when shift_from has one" do
+      subject(:shift_cx) { described_class.shift_cx(**signature) }
 
-      context "when shift_to already has one" do
+      shared_examples_for "when shift_to already has one" do
         it "returns correct records" do
           to_be_shifted
           existing_record
@@ -74,7 +74,7 @@ shared_examples_for "a shiftable collection" do
         end
       end
 
-      context "when shift_to does not have one" do
+      shared_examples_for "when shift_to does not have one" do
         it "returns correct records" do
           to_be_shifted
           expect(shift_cx.map(&:id)).to eq([to_be_shifted.id])
@@ -91,6 +91,25 @@ shared_examples_for "a shiftable collection" do
           shift_cx
           expect(described_class.where(described_class.shift_cx_column => shift_to.id).pluck(:id)).to eq([to_be_shifted.id])
         end
+      end
+
+      context "when bang: false" do
+        let(:signature) { { shift_to: shift_to, shift_from: shift_from, bang: false } }
+        it_behaves_like "when shift_to already has one"
+        it_behaves_like "when shift_to does not have one"
+      end
+
+      context "when bang: true" do
+        let(:signature) { { shift_to: shift_to, shift_from: shift_from, bang: true } }
+        let(:signature) { { shift_to: shift_to, shift_from: shift_from } }
+        it_behaves_like "when shift_to already has one"
+        it_behaves_like "when shift_to does not have one"
+      end
+
+      context "when bang as default value" do
+        let(:signature) { { shift_to: shift_to, shift_from: shift_from } }
+        it_behaves_like "when shift_to already has one"
+        it_behaves_like "when shift_to does not have one"
       end
     end
   end

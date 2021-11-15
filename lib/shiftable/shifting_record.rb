@@ -33,10 +33,10 @@ module Shiftable
     def do_save
       if shift_each_wrapper
         shift_each_wrapper.call(result) do
-          result.save
+          bang ? result.save! : result.save
         end
       else
-        result.save
+        bang ? result.save! : result.save
       end
     end
 
