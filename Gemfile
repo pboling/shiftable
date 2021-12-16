@@ -33,5 +33,5 @@ end
 if coverage
   gem "codecov", "~> 0.6"
   gem "simplecov", "~> 0.21"
-  gem "simplecov-cobertura", "~> 1.4"
+  gem "simplecov-cobertura", "~> 2.1"
 end
