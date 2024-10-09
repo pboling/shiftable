@@ -13,7 +13,7 @@ record to a new record.
 | unit tests                 |  [![supported rubies](https://github.com/pboling/shiftable/actions/workflows/supported.yml/badge.svg)][actions] [![unsupported status](https://github.com/pboling/shiftable/actions/workflows/unsupported.yml/badge.svg)][actions] |
 | coverage & maintainability |  [![Test Coverage](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/test_coverage)][climate_coverage] [![codecov](https://codecov.io/gh/pboling/shiftable/branch/main/graph/badge.svg?token=J1542PYN2Z)][codecov_coverage] [![Maintainability](https://api.codeclimate.com/v1/badges/a53aa8b7c413b950d519/maintainability)][climate_maintainability] [![Security Policy](https://img.shields.io/badge/security-policy-brightgreen.svg?style=flat)][security] |
 | resources                  |  [![Discussion](https://img.shields.io/badge/discussions-github-brightgreen.svg?style=flat)][gh_discussions] [![Get help on Codementor](https://cdn.codementor.io/badges/get_help_github.svg)](https://www.codementor.io/peterboling?utm_source=github&utm_medium=button&utm_term=peterboling&utm_campaign=github) [![Join the chat at https://gitter.im/pboling/shiftable](https://badges.gitter.im/Join%20Chat.svg)][chat] [![Blog](https://img.shields.io/badge/blog-railsbling-brightgreen.svg?style=flat)][blogpage] |
-| Spread ~♡ⓛⓞⓥⓔ♡~         |  [![Open Source Helpers](https://www.codetriage.com/pboling/shiftable/badges/users.svg)][code_triage] [![Liberapay Patrons](https://img.shields.io/liberapay/patrons/pboling.svg?logo=liberapay)][liberapay_donate] [![Sponsor Me](https://img.shields.io/badge/sponsor-pboling.svg?style=social&logo=github)][gh_sponsors] [🌏][aboutme] [👼][angelme] [💻][coderme] [🌹][politicme] [![Tweet @ Peter][followme-img]][tweetme] |
+| Spread ~♡ⓛⓞⓥⓔ♡~         |  [![Open Source Helpers](https://www.codetriage.com/pboling/shiftable/badges/users.svg)][code_triage] [![Liberapay Patrons](https://img.shields.io/liberapay/patrons/pboling.svg?logo=liberapay)][liberapay_donate] [![Sponsor Me](https://img.shields.io/badge/sponsor-pboling.svg?style=social&logo=github)][gh_sponsors] [🌏][aboutme] [👼][angelme] [💻][coderme] [![Tweet @ Peter][followme-img]][tweetme] |
 
 ## Compatibility
 
@@ -421,8 +421,6 @@ See [LICENSE][license] for the official [Copyright Notice][copyright-notice-expl
 [followme-img]: https://img.shields.io/twitter/follow/galtzo.svg?style=social&label=Follow
 
 [tweetme]: http://twitter.com/galtzo
-
-[politicme]: https://nationalprogressiveparty.org
 
 [documentation]: https://rubydoc.info/github/pboling/shiftable/main
 
